@@ -3,7 +3,7 @@ package scrabbleii;
 /**
  * Clase main do Scrabble 
  * @author mariogb
- */
+*/
 public class ScrabbleII {
 
     /**
@@ -11,17 +11,45 @@ public class ScrabbleII {
      */
     public static void main(String[] args) {
 
+        boolean sair = false;
         Partida p;
         Xogador x1, x2;
+        char op;
+        
         System.out.println("== SCRABBLE ==");
 
-        System.out.println("Xogador 1 : ");
-        x1 = pedirXogador();
-        System.out.println("Xogador 2 : ");
-        x2 = pedirXogador();
+        do {
 
-        p = new Partida(x1, x2);
-        p.xogarPartida();
+            System.out.println("Xogador 1 : ");
+            x1 = pedirXogador();
+            
+            System.out.println("Xogador 2 : ");
+            x2 = pedirXogador();
+
+            p = new Partida(x1, x2);
+            p.xogarPartida();
+
+            System.out.println("Queres xogar outra partida ? (S / N)");
+
+            do {
+
+                op = Character.toLowerCase(EntradaSaida.lerChar());
+
+                if(op != 's' && op != 'n' ) {
+
+                    EntradaSaida.imprimirErro("Ten que ser s ou n");
+
+                }
+
+            } while(op != 's' && op != 'n');
+
+            if(op == 'n' ) {
+
+                sair = true;
+
+            } 
+
+        } while(!sair);
 
     }
 

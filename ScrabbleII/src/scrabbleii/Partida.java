@@ -1,22 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package scrabbleii;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
- *
+ * Clase onde se realiza a partida 
  * @author a21mariogb
  */
 public class Partida {
 
-    private ArrayList<Posicion> taboleiro;
+    private final int NUM_FILAS = 21;
+
+    private Posicion[][] taboleiro;
     private Xogador xogador1;
     private Xogador xogador2;
+    private byte maxRendicions;
     private int numTurno;
     private int puntosVictoria;
 
@@ -25,8 +22,8 @@ public class Partida {
 
         this.xogador1 = xogador1;
         this.xogador2 = xogador2;
-        taboleiro = new ArrayList<>();
         numTurno = 1;
+        iniciarTaboleiro();
     
     }
 
@@ -54,30 +51,20 @@ public class Partida {
 
         xogadorActual = (xogadorActual == 1)?2:1; //Cambiamos de xogador
     }*/
-/*
-    public void mostrarResultados() {
-        int puntuacionXog1 = xogador1.getPuntuacion();
-        int puntuacionXog2 = xogador2.getPuntuacion();
 
-        System.out.println("\n ****   RESULTADO FINAL    ****");
-        if (puntuacionXog1 == puntuacionXog2) {
-            System.out.println("Os xogadores EMPATARON con " + puntuacionXog1 + " puntos");
-        } else if (puntuacionXog1 > puntuacionXog2) {
-            System.out.println("O xogador 1 GAÑOU con " + puntuacionXog1 + " puntos, sobre os " + puntuacionXog2 + " puntos do xogador 2");
-        } else {
-            System.out.println("O xogador 2 GAÑOU con " + puntuacionXog2 + " puntos, sobre os " + puntuacionXog1 + " puntos do xogador 1");
-        }
-    }
-*/
+
+
     /**
      * Método para inicializar as casillas do taboleiro 
      */
     public void iniciarTaboleiro() {
         Random rnd = new Random();
 
-        for(int i = 0; i < 21; i++ ) {
+        taboleiro = new Posicion[NUM_FILAS][NUM_FILAS];
 
-            for(int j = 0; j < 21; j++ ) {
+        for(int i = 0; i < NUM_FILAS; i++ ) {
+
+            for(int j = 0; j < NUM_FILAS; j++ ) {
 
 
 
@@ -88,29 +75,77 @@ public class Partida {
 
     public void xogarPartida() {
         // reiniciarDatos();
-        boolean rematada = false, correcto;
+        boolean rematada = false;
+        boolean correcto;
         Xogador xogadorTurno;
+        String palabra;
 
         do {
             //seguinte turno
             xogadorTurno = seguinteXogador();
             
+            System.out.println("Turno de " + xogadorTurno.getNome());
+
+            System.out.println("Introduce unha palabra cun mínimo de " + Scrabble.LON_MIN + " letras");
+
+            // Palabra
             do {
                 
-
-
                 correcto = true;
+                palabra = EntradaSaida.lerString();
+                
+                if(!Scrabble.lonxitudeCorrecta(palabra)) {
+
+                    correcto = false;
+
+                    EntradaSaida.imprimirErro("A palabra ten que ter como mínimo " + Scrabble.LON_MIN + " caracteres");
+
+                }
+                
+                if(correcto ) {
+/*
+                    byte resultado = xogadorTurno.podeColocarPalabra(palabra, xogadorTurno.getComodins());
+
+                    if(resultado == -1) {
+
+                        correcto = false;
+                        EntradaSaida.imprimirErro("O xogador non ten as letras ou comodíns para colocar a palabra. Volve a introducir unha palabra");
+    
+                    } else if(resultado != 0) {
+    
+                        System.out.println("Vanse a usar " + resultado + " comodíns para colocar a palabra");
+    
+                    }*/
+
+                } 
+
+            } while(!correcto);
+
+
+            // Posición
+            do {
+                correcto = true;
+
+
+
 
             } while(!correcto);
 
             // final 
             if(xogadorTurno.getPuntos() >= puntosVictoria) {
 
+                rematada = true;
 
+            }
+
+            if(xogadorTurno.getRendicion() == maxRendicions ) {
+
+                rematada = true;
 
             }
 
         }while(!rematada);
+
         amosarResultados();
 
     }
@@ -119,17 +154,29 @@ public class Partida {
 
         System.out.println("== RESULTADOS ==");
 
-        if(xogador1.getPuntos() > xogador2.getPuntos() ) {
+        if(xogador1.getRendicion() == maxRendicions ) {
 
-            System.out.println("Gañou o xogador" + xogador1);
+            System.out.println("Gaña o xogador " + xogador2.getNome() + " xa que " + xogador1.getNome() + " pasou de turno " + maxRendicions + " veces");
 
-        } else if (xogador1.getPuntos() < xogador2.getPuntos() ) {
+        } else if (xogador2.getRendicion() == maxRendicions ) {
 
-            System.out.println("Gañou o xogador " + xogador2);
+            System.out.println("Gaña o xogador " + xogador1.getNome() + " xa que " + xogador2.getNome() + " pasou de turno " + maxRendicions + " veces");
 
         } else {
 
-            System.out.println("EMPATE entre " + xogador1.getNome() + " e " + xogador2.getNome());
+            if(xogador1.getPuntos() > xogador2.getPuntos() ) {
+
+                System.out.println("Gañou o xogador" + xogador1);
+    
+            } else if (xogador1.getPuntos() < xogador2.getPuntos() ) {
+    
+                System.out.println("Gañou o xogador " + xogador2);
+    
+            } else {
+    
+                System.out.println("EMPATE entre " + xogador1.getNome() + " e " + xogador2.getNome());
+    
+            }
 
         }
 
