@@ -5,15 +5,11 @@
 package scrabbleii;
 
 import java.util.ArrayList;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
+import static junit.framework.Assert.assertEquals;
+import org.junit.BeforeClass;
+import org.junit.Test;
 /**
- *
+ * Tests unitarios para o método "podeColocarPalabra()" da clase xogador
  * @author mariogb
  */
 public class XogadorTest {
@@ -23,15 +19,11 @@ public class XogadorTest {
     public XogadorTest() {
     }
     
-    @BeforeAll
+    @BeforeClass
     public static void setUpClass() {
         
         xog = new Xogador("XogadorTest");
 
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
     }
 
     /**
@@ -42,9 +34,8 @@ public class XogadorTest {
 
         String[] contido = {"h", "o", "l", "a"};
         String palabra = "hola";
-        byte numComodins = 0;
-
-        testXenerico(contido, palabra,true, numComodins);
+        
+        testMetodo(contido, palabra,(byte)0 );
 
     }
 
@@ -53,20 +44,18 @@ public class XogadorTest {
 
         String[] contido = {"h", "", "l", "a"};
         String palabra = "hola";
-        byte numComodins = 0;
 
-        testXenerico(contido, palabra, false , numComodins);
+        testMetodo(contido, palabra, (byte)1);
 
     }
 
     @Test
     public void testC3() {
 
-        String[] contido = {"h", "o", "l", "a"};
-        String palabra = "es pa ciado";
-        byte numComodins = 0;
-
-        testXenerico(contido, palabra, false, numComodins);
+        String[] contido = {"h", "o", "l", "a"};      
+        String palabra = "espaciado";
+        
+        testMetodo(contido, palabra, (byte)7);
 
     }
 
@@ -75,9 +64,8 @@ public class XogadorTest {
 
         String[] contido = {"h", "e", "l", "l", "o"};
         String palabra = "hola";
-        byte numComodins = 0;
 
-        testXenerico(contido, palabra, false, numComodins);
+        testMetodo(contido, palabra, (byte)1);
 
     }
 
@@ -86,20 +74,24 @@ public class XogadorTest {
 
         String[] contido = {"h", "o"};
         String palabra = "hola";
-        byte numComodins = 2;
 
-        testXenerico(contido, palabra,true, numComodins);
+        testMetodo(contido, palabra,(byte)2);
 
     }
 
-    private void testXenerico(String[] contido, String palabra,boolean esperado, byte numComodins) {
+    private void testMetodo(String[] contido, String palabra,byte esperado) {
 
         ArrayList<String> arr = new ArrayList<>();
-        arr.addAll(contido);
+        
+        for(int i = 0; i < contido.length; i++ ) {
 
+            arr.add(contido[i]);
+
+        }
+        
         xog.setLetras(arr);
-
-        assertEquals(esperado, xog.podeColocarPalabra(palabra, numComodins));
+        
+        assertEquals(esperado, xog.podeColocarPalabra(palabra));
 
     }
     

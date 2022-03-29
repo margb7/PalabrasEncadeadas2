@@ -37,9 +37,7 @@ public class Xogador {
     }
 
     public void setLetras(ArrayList<String> letras) {
-
         this.letras = letras;
-
     }
 
     public void setRendicions(byte pasos ) {
@@ -56,90 +54,37 @@ public class Xogador {
 
 
     /**
-     *  TODO: el uso de comodines después del ch / ll
-     *  mejor pasar directamente usando c y despues comprobar el siguiente indice
-     * @param palabra
-     * @return
-     */
-    public boolean podeColocarPalabra(String palabra, byte numComodins ) {
-        boolean out = true;
-        int i = 0;
-        boolean comprobarCH = false;
-        boolean comprobarLL = false;
-        ArrayList<String> letrasXogador = (ArrayList<String>) letras.clone();
+     * Método para saber se o xogador pode colocar a palabra. Devolve o número de comodins precisos para colocar a palabra
+     * @param palabra palabra a palabra a colocar
+     * @return devolve 
+     * <ul>
+     *  <li><em>-1</em>: se non se pode colocar</li>
+     *  <li><em>0</em>: se se pode colocar sen usar comodins</li>
+     *  <li><em>num_comodins</em>: o numero de comodins que se precisan para colocar a palabra. O máximo valor é 
+     *  lonxitude da palabra no caso de que o xogador non teña ningunha letra</li>
+     * </ul>
+    */
+    //@SuppressWarnings("unchecked")
+    public byte podeColocarPalabra(String palabra) {
+        byte out = 0;
+        Posicion[] palabraConvertida = Scrabble.convertirEnPosicions(palabra);
+        ArrayList<String> copiaLetras = (ArrayList<String>) letras.clone();
 
-        do {
+        for(Posicion p : palabraConvertida ) {
 
-            if(comprobarLL) {
+            if(!copiaLetras.contains(p.getContido()) ) {
 
-                if(palabra.charAt(i) == 'h' ) {
-
-                    out = letrasXogador.contains("ch");
-
-                } else {
-
-                    if(letrasXogador.contains("c") ) {
-
-                        out = letrasXogador.contains("" + palabra.charAt(i));
-
-                    } else {
-
-                        out = false;
-
-                    }
-
-                }
-
-            } else if(comprobarCH) {
-
-                if(palabra.charAt(i) == 'l' ) {
-
-                    out = letrasXogador.contains("l");
-
-                } else {
-
-                    if(letrasXogador.contains("l") ) {
-
-                        out = letrasXogador.contains(palabra.charAt(i));
-
-                    } else {
-
-                        out = false;
-
-                    }
-
-                }
-
-            } else if(palabra.charAt(i) == 'c' && i != palabra.length() - 1 ) {
-
-                comprobarCH = true;
-
-            } else if(palabra.charAt(i) == 'l' && i != palabra.length() - 1 ) {
-
-                comprobarLL = true;
-
+                out++;
+                
             } else {
 
-                out = letrasXogador.contains("" + palabra.charAt(i));
-
-            }
-            
-            if(!out) {
-
-                numComodins--;
-
-                if(numComodins >= 0 ) {
-
-                    out = true;
-
-                }
+                copiaLetras.remove(copiaLetras.indexOf(p.getContido()));
 
             }
 
-            i++;
+        }
 
-        } while(i < palabra.length() && out);
-        
+        // TODO: implementar checks por si el array de letras está vacío
 
         return out;
     }

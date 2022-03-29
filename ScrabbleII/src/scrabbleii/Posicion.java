@@ -3,11 +3,15 @@ package scrabbleii;
 public class Posicion {
 
     private String contido;
+    private byte multiplicador;
 
-    public Posicion(String contido) {
+    public Posicion(String contido ) {
+        this(contido, (byte)1);
+    }
 
+    public Posicion(String contido, byte multiplicador) {
         this.contido = contido;
-
+        this.multiplicador = multiplicador;
     }
 
     public String getContido() {
@@ -15,17 +19,44 @@ public class Posicion {
     }
 
     public boolean estaBaleiro() {
-        
         return contido.equals("");
-
     }
 
-    public int getPuntos() {
+    public boolean eMultiplicador() {
+        return (multiplicador != 1);
+    }
 
-        
+    public String estadoPosicion() {
 
-        return 0;
+        String out;
 
+        if(estaBaleiro()) {
+
+            if(eMultiplicador() ) {
+
+                out = "x" + multiplicador;
+
+            } else {
+
+                out = "  ";
+
+            }
+            
+        } else {
+
+            if(contido.length() == 2 ) {
+
+                out = contido;
+
+            } else {
+
+                out = " " + contido;
+
+            }
+
+        }
+
+        return out;
     }
 
 }

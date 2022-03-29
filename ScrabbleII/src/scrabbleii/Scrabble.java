@@ -16,50 +16,52 @@ public class Scrabble {
         return (palabra.length() >= LON_MIN);
     }
 
-    /**
-     *
-     * @param pal1
-     * @param pal2
-     * @return O resultado é un byte cos seguintes valores
-     * <ul>
-     *  <li> 0: se as dúas palabras teñen mínimo 2 caracteres e os últimos 2 caracteres
-     * da primeira palabra coinciden cos 2 primeiros caracteres da segunda palabra</li>
-     *  <li> 1: se as dúas palabras teñen mínimo 2 caracteres e os últimos 2 caracteres
-     * da primeira palabra NON coinciden cos 2 primeiros caracteres da segunda palabra</li>
-     *  <li> -1: se algunha das dúas palabras non ten unha lonxitude mínima de 2 caracteres</li>
-     * </ul>
-     */
-    public static byte comprobarPalabra(String pal1, String pal2) {
-        byte resultado = 0;
-        int lon = pal1.length();
-        
-        if (lon >= 2 && pal2.length() >= 2 ) {
-
-            if (pal1.substring(lon-2, lon).equals(pal2.substring(0, 2))) {
-            
-                resultado = 0;
-
+    public static Posicion[] convertirEnPosicions(String palabra ) {
+        Posicion[] lista = new Posicion[palabra.length()];
+        int listIndex = 0, i = 0;
+        char car;
+    
+        while(i < palabra.length()) {
+    
+            car = Character.toLowerCase(palabra.charAt(i));
+    
+            if(car == 'c') {
+    
+                if(i != palabra.length() - 1 && palabra.charAt(i + 1) == 'h') {
+    
+                    lista[listIndex++] = new Posicion("ch");
+                    i++;
+    
+                } else {
+    
+                    lista[listIndex++] = new Posicion(Character.toString(car));
+    
+                }
+    
+            } else if(car == 'l') {
+    
+                if(i != palabra.length() - 1 && palabra.charAt(i + 1) == 'l') {
+    
+                    lista[listIndex++] = new Posicion("ll");
+                    i++;
+    
+                } else {
+    
+                    lista[listIndex++] = new Posicion(Character.toString(car));
+    
+                }
+    
             } else {
-                
-                resultado = 1;
-
+    
+                lista[listIndex++] = new Posicion(Character.toString(car)); 
+    
             }
-
-        } else {
-            
-            resultado = -1;
-
+    
+            i++; 
+    
         }
-
-        return resultado;
-    }
-
-    public static int obterPuntuacion(Posicion p, String c ) {
-        int out = 0;
-
-        
-
-        return out;
+    
+        return lista;
     }
 
     public static int obterPuntuacion(String palabra) {
@@ -72,7 +74,7 @@ public class Scrabble {
 
                 if(palabra.charAt(i) == 'c' && i != palabra.length() && palabra.charAt(i + 1) == 'h') {
 
-                    puntuacion += 67; 
+                    puntuacion += 67; // TODO: poner o valor correcto
                     caracterEspecial = true;
     
                 }

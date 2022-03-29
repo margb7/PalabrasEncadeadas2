@@ -2,6 +2,8 @@ package scrabbleii;
 
 import java.util.Scanner;
 
+import javax.print.attribute.standard.Copies;
+
 
 /**
  * Clase que xestiona a entrada e saída pola terminal.
@@ -206,6 +208,27 @@ public class EntradaSaida {
         } while(!correcto);
         
         return out;
+    }
+
+    public static boolean pedirConfirmacion() {
+        boolean correcto;
+        char op;
+
+        do {
+            correcto = true;
+            op = Character.toLowerCase(lerChar());
+
+            if(op != 's' && op != 'n' ) {
+
+                correcto = false;
+
+                imprimirErro("Ten que ser 's' ou 'n'");
+
+            }
+
+        } while(!correcto);
+        
+        return correcto;
     }
     
     public static void imprimirErro(String mensaxe ) {
