@@ -36,6 +36,10 @@ public class Xogador {
         return numComodins;
     }
 
+    public ArrayList<String> getLetras() {
+        return letras;
+    }
+
     public void setLetras(ArrayList<String> letras) {
         this.letras = letras;
     }
@@ -51,7 +55,6 @@ public class Xogador {
     public void sumarPuntos(int puntos ) {
         this.puntos = (puntos >= 0)? (this.puntos + puntos) : puntos;
     }
-
 
     /**
      * Método para saber se o xogador pode colocar a palabra. Devolve o número de comodins precisos para colocar a palabra
