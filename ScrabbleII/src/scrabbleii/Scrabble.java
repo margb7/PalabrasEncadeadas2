@@ -1,13 +1,18 @@
 package scrabbleii;
 
 /**
- *
+ * Clase para xestionar as regras do Scrabble e algunhas utilidades para as partidas
  * @author a21mariogb
  */
 public class Scrabble {
 
     public static final int LON_MIN = 3;
 
+    /**
+     * Método 
+     * @param palabra
+     * @return
+     */
     public static boolean comprobarSaida(String palabra) {
         return (palabra.equals("0"));
     }

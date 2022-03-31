@@ -2,9 +2,6 @@ package scrabbleii;
 
 import java.util.Scanner;
 
-import javax.print.attribute.standard.Copies;
-
-
 /**
  * Clase que xestiona a entrada e saída pola terminal.
  * @author a21mariogb
@@ -191,6 +188,26 @@ public class EntradaSaida {
     }
     
     public static int pedirRango(int min, int max) {
+        int out;
+        boolean correcto;
+        
+        do {
+            correcto = true;
+            out = lerInt();
+            
+            if(out < min || out > max ) {
+                
+                imprimirErro("Ten que estar no rango [" + min + "," + max + "]");
+                correcto = false;
+                
+            }
+            
+        } while(!correcto);
+        
+        return out;
+    }
+
+    public static float pedirRango(float min, float max) {
         int out;
         boolean correcto;
         

@@ -9,10 +9,10 @@ import java.util.Random;
  */
 public class Partida {
 
-    private final int NUM_FILAS = 21;
-    private final float PROB_X2 = 0.2F;
-    private final float PROB_X3 = 0.1F;
-    private final float PROB_X4 = 0.05F;
+    private final int NUM_FILAS;
+    private final float PROB_X2;
+    private final float PROB_X3;
+    private final float PROB_X4;
 
     private Posicion[][] taboleiro;
     private ArrayList<String> tablaLetras;
@@ -22,29 +22,123 @@ public class Partida {
     private int numTurno;
     private int puntosVictoria;
 
-
+    /**
+     * Constructor para unha partida coas configuracións por defecto
+     * @param xogador1 o xogador 1
+     * @param xogador2 o xogador 2
+     */
     public Partida(Xogador xogador1, Xogador xogador2) {
+
+        this(xogador1, xogador2, 0.2F, 0.1F, 0.05F, 21);
+
+    }
+
+    /**
+     * Constructor con algúns axustes da partida
+     * @param xogador1 o xogador 1.
+     * @param xogador2 o xogador 2.
+     * @param probx2 a probabilidade de que aparezca un x2.
+     * @param probx3 a probabilidade de que aparezca un x3.
+     * @param probx4 a probabilidade de que aparezca un x4.
+     * @param numFilas o número de filas do taboleiro.
+     */
+    public Partida(Xogador xogador1, Xogador xogador2, float probx2, float probx3, float probx4, int numFilas ) {
 
         this.xogador1 = xogador1;
         this.xogador2 = xogador2;
+
+        // Axustes das regras da partida
         numTurno = 1;
         maxRendicions = 3;
         puntosVictoria = 45;
+
+        // Axustes do taboleiro
+        NUM_FILAS = numFilas;
+        PROB_X2 = probx2;
+        PROB_X3 = probx3;
+        PROB_X4 = probx4;
+
+        // Inicializar o taboleiro
         iniciarTaboleiro();
         engadirLetras();
 
     }
 
+    /**
+     * Getter para obter o xogador 1 da partida.
+     * @return o xogador 1.
+     */
     public Xogador getXogador1() {
         return xogador1;
     }
 
+    /**
+     * Getter para obter o xogador 2 da partida.
+     * @return o xogador 2.
+     */
     public Xogador getXogador2() {
         return xogador2;
     }
 
     /**
-     * Método para inicializar as casillas do taboleiro 
+     * Getter para obter o máximo de rendicions ata perder na partida.
+     * @return o número máximo de rendicions.
+     */
+    public byte getMaxRendicions() {
+        return maxRendicions;
+    }
+
+    /**
+     * Getter para obter o número de filas do taboleiro (coincide co número de columnas).  
+     * @return o número de filas
+     */
+    public int getNUM_FILAS() {
+        return NUM_FILAS;
+    }
+
+    /**
+     * Getter para obter o número de puntos precisos para gañar a partida.
+     * @return o número de puntos precisos para gañar
+     */
+    public int getPuntosVictoria() {
+        return puntosVictoria;
+    }
+
+    /**
+     * Setter para o xogador 1.
+     * @param xogador1 o novo xogador.
+     */
+    public void setXogador1(Xogador xogador1) {
+        this.xogador1 = xogador1;
+    }
+
+    /**
+     * Setter para o xogador 2.
+     * @param xogador2 o novo xogador.
+     */
+    public void setXogador2(Xogador xogador2) {
+        this.xogador2 = xogador2;
+    }
+
+    /**
+     * Settter para colocar o número máximo de veces que un xogador
+     * pode rendirse ata perder.
+     * @param maxRendicions o novo número de rendicións. Se é menor que 1 será 1.
+     */
+    public void setMaxRendicions(byte maxRendicions) {
+        this.maxRendicions = (maxRendicions >= 1)? maxRendicions : 1;
+    }
+
+    /**
+     * Setter para o número de puntos precisos para gañar a partida
+     * @param puntosVictoria o novo número. Se é menor que 10 usarase 10.
+     */
+    public void setPuntosVictoria(int puntosVictoria) {
+        this.puntosVictoria = (puntosVictoria >= 10)? puntosVictoria : 10;
+    }
+
+    /**
+     * Método para inicializar as casillas do taboleiro cos multiplicadores e casillas vacías.
      */
     public void iniciarTaboleiro() {
         Random rnd = new Random();
@@ -81,6 +175,10 @@ public class Partida {
         }
     }
 
+    /**
+     * Método para inicializar o arrayList das letras posibles para
+     * repartir durante a partida aos xogadores.
+     */
     private void engadirLetras() {
 
         String[] letras = new String[]{"A","A","A","A","A","A","A","A","A","A","A",
@@ -106,6 +204,10 @@ public class Partida {
 
     }
 
+    /**
+     * Método para repartir letras a un xogador. Ocúpase 
+     * @param xog
+     */
     private void repartirLetras(Xogador xog) {
 
         if(xog.getLetras().size() < 7 ) {
@@ -205,19 +307,11 @@ public class Partida {
 
             } else {
 
-                comodinsNecesarios = xogadorTurno.podeColocarPalabra(palabra);
+                comodinsNecesarios = comprobarComodins(xogadorTurno, palabra);
 
-                if(comodinsNecesarios > xogadorTurno.getComodins() ) {
-
-                    EntradaSaida.imprimirErro("Faltan comodíns ou letras para colocar esta palabra");
+                if(comodinsNecesarios == -1 ) {
 
                     correcto = false;
-
-                } else if(comodinsNecesarios != 0) {
-
-                    System.out.println("Queres usar " + comodinsNecesarios + " comodíns para colocar a palabra? (S/N)");
-
-                    correcto = EntradaSaida.pedirConfirmacion();
 
                 }
 
@@ -256,31 +350,15 @@ public class Partida {
 
                     }
 
-                    if(horizontal ) {
-
-                        if(fila + palabra.length() > NUM_FILAS) {
-
-                            correcto = false;
-
-                        }
-
-                    } else {
-
-                        if(columna + palabra.length() > NUM_FILAS) {
-
-                            correcto = false;
-
-                        }
-
-                    }
-
-                    if(correcto && podeColocarse(Scrabble.convertirEnPosicions(palabra), fila, columna, horizontal)) {
+                    if(podeColocarse(palabra, fila, columna, horizontal) ) {
 
                         System.out.println("Podese colocar");
+                        colocarPalabra(Scrabble.convertirEnPosicions(palabra), fila, columna, horizontal);
 
                     } else {
 
                         EntradaSaida.imprimirErro("Non se pode colocar");
+                        correcto = false;
 
                     }
                     
@@ -313,24 +391,110 @@ public class Partida {
         return out;
     }
 
-    private boolean podeColocarse(Posicion[] palabra, byte fila, byte columna, boolean horizontal) {
-        boolean out = true;
-        byte x, y;
-        byte numCoincidencias = 0;
+    private byte comprobarComodins(Xogador xog, String palabra) {
 
-        for(int i = 0; i < palabra.length; i++ ) {
+        byte out = xog.podeColocarPalabra(palabra);
 
+        if(out > xog.getComodins() ) {
 
+            EntradaSaida.imprimirErro("Faltan comodíns ou letras para colocar esta palabra");
+
+            out = -1;
+
+        } else if(out != 0) {
+
+            System.out.println("Queres usar " + out + " comodíns para colocar a palabra? (S/N)");
+
+            if(!EntradaSaida.pedirConfirmacion() ) {
+
+                out = -1;
+
+            } 
 
         }
 
-
-        return numCoincidencias != 0 && numCoincidencias != palabra.length;
+        return out;
     }
 
-    private boolean colocarPalabra() {
+    private boolean comprobarForaBordes(String palabra, boolean horizontal, byte fila, byte columna ) {
 
-        return false;
+        boolean out = true;
+
+        if(horizontal ) {
+
+            if(fila + palabra.length() > NUM_FILAS) {
+
+                out = false;
+
+            }
+
+        } else {
+
+            if(columna + palabra.length() > NUM_FILAS) {
+
+                out = false;
+
+            }
+
+        }
+
+        return out;
+    }
+
+    private boolean podeColocarse(String palabra, byte fila, byte columna, boolean horizontal) {
+        boolean out = true;
+        byte numCoincidencias = 0;
+
+        // Antes de comprobar se encaixa hai que comprobar que non se sae dos bordes 
+        // do taboleiro
+        out = comprobarForaBordes(palabra, horizontal, fila, columna); 
+
+        if(!out ) {
+
+            Posicion[] palabraPosicions = Scrabble.convertirEnPosicions(palabra);
+            String str;
+
+            if(horizontal ) {
+
+                for(int i = 0; i < palabra.length(); i++ ) {
+
+                    str = palabraPosicions[i].getContido();
+
+                    if(str.equals(taboleiro[fila][columna + i].getContido()) ) {
+
+                        numCoincidencias++;
+
+                    } 
+    
+                }
+    
+            }
+
+        }
+
+        // Non poden coincidir a palabra dada exactamente cunha palabra do taboleiro
+        return numCoincidencias != 0 && numCoincidencias != palabra.length();
+    }
+
+    private void colocarPalabra(Posicion[] palabra, byte fila, byte columna, boolean horizontal) {
+
+        if(horizontal ) {
+
+            for(int i = 0; i < palabra.length; i++ ) {
+
+                taboleiro[fila][columna + i] = palabra[i];
+
+            }
+
+        } else {
+
+            for(int i = 0; i < palabra.length; i++ ) {
+
+                taboleiro[fila + i][columna] = palabra[i];
+
+            }
+
+        }
 
     }
 

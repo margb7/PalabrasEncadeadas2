@@ -1,7 +1,13 @@
 package scrabbleii;
 
 /**
- * Clase main do Scrabble 
+ * Clase main do Scrabble.
+ * As melloras son:
+ * 
+ * - Pedir as probabilidades de que aparezcan as distintas 
+ * casillas especiais. 
+ * - Pedir o tamaño do taboleiro.
+ * 
  * @author mariogb
 */
 public class ScrabbleII {
@@ -14,9 +20,10 @@ public class ScrabbleII {
         boolean sair = false;
         Partida p;
         Xogador x1, x2;
-        char op;
         
-        System.out.println("== SCRABBLE ==");
+        System.out.println("  ==============");
+        System.out.println("==== SCRABBLE ====");
+        System.out.println("  ==============");
 
         do {
 
@@ -26,28 +33,51 @@ public class ScrabbleII {
             System.out.println("Xogador 2 : ");
             x2 = pedirXogador();
 
-            p = new Partida(x1, x2);
-            p.xogarPartida();
+            System.out.println("Queres configurar axustes da partida? (S / N)");
 
+            if(EntradaSaida.pedirConfirmacion() ) {
+
+                int size;
+                int numRendicions;
+                int puntosVictoria;
+                float probx2;
+                float probx3;
+                float probx4;
+
+                System.out.println("- Introduce o tamaño do taboleiro [10, 30]:");
+                size = EntradaSaida.pedirRango(10, 30);
+
+                System.out.println("- Introduce a probabilidade dun x2 [0, 0.2]:");
+                probx2 = EntradaSaida.pedirRango(0F, 0.2F);
+
+                System.out.println("- Introduce a probabilidade dun x3 [0, 0.2]:");
+                probx3 = EntradaSaida.pedirRango(0F, 0.2F);
+
+                System.out.println("- Introduce a probabilidade dun x4 [0, 0.2]:");
+                probx4 = EntradaSaida.pedirRango(0F, 0.2F);
+
+                p = new Partida(x1, x2, probx2, probx3, probx4, size);
+
+                System.out.println("- Introduce o número máximo de veces que se pode pasar [1, 20]:");
+                numRendicions = EntradaSaida.pedirRango(1, 20);
+
+                System.out.println("- Introduce o número de puntos para gañar [10, 1000]:");
+                puntosVictoria = EntradaSaida.pedirRango(10, 1000);
+
+                p.setMaxRendicions((byte) numRendicions);
+                p.setPuntosVictoria(puntosVictoria);
+
+            } else {
+
+                p = new Partida(x1, x2);
+
+            }
+
+            p.xogarPartida();
+           
             System.out.println("Queres xogar outra partida ? (S / N)");
 
-            do {
-
-                op = Character.toLowerCase(EntradaSaida.lerChar());
-
-                if(op != 's' && op != 'n' ) {
-
-                    EntradaSaida.imprimirErro("Ten que ser s ou n");
-
-                }
-
-            } while(op != 's' && op != 'n');
-
-            if(op == 'n' ) {
-
-                sair = true;
-
-            } 
+            sair = !EntradaSaida.pedirConfirmacion();
 
         } while(!sair);
 
