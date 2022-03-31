@@ -7,7 +7,8 @@ package scrabbleii;
  * - Pedir as probabilidades de que aparezcan as distintas 
  * casillas especiais. 
  * - Pedir o tamaño do taboleiro.
- * 
+ * - Os comodíns colócanse automaticamente. So se pide unha confirmación no caso de usar 
+ * un ou mais.
  * @author mariogb
 */
 public class ScrabbleII {
