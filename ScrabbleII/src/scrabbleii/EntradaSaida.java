@@ -245,7 +245,7 @@ public class EntradaSaida {
 
         } while(!correcto);
         
-        return correcto;
+        return op == 's';
     }
     
     public static void imprimirErro(String mensaxe ) {

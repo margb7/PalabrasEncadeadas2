@@ -2,13 +2,14 @@ package scrabbleii;
 
 /**
  * Clase main do Scrabble.
- * As melloras son:
- * 
- * - Pedir as probabilidades de que aparezcan as distintas 
- * casillas especiais. 
- * - Pedir o tamaño do taboleiro.
- * - Os comodíns colócanse automaticamente. So se pide unha confirmación no caso de usar 
- * un ou mais.
+ * As melloras incluídas son:
+ * <ul>
+ *      <li>Pedir as probabilidades de que aparezcan as distintas casillas especiais</li>
+ *      <li>Pedir o tamaño do taboleiro.</li>
+ *      <li>Os comodíns colócanse automaticamente. So se pide unha confirmación no caso de usar 
+ *      un ou mais.</li>
+ *      <li>Inclúese os puntos de victoria. O primer xogador en chegar a eses puntos será o gañador.</li>
+ * </ul>
  * @author mariogb
 */
 public class ScrabbleII {

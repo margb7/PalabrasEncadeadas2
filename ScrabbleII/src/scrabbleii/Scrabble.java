@@ -1,5 +1,8 @@
 package scrabbleii;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Clase para xestionar as regras do Scrabble e algunhas utilidades para as partidas
  * @author a21mariogb
@@ -47,7 +50,20 @@ public class Scrabble {
     
                 }
     
-            } else {
+            }else if(car == 'r') {
+    
+                if(i != palabra.length() - 1 && palabra.charAt(i + 1) == 'r') {
+    
+                    lista[listIndex++] = new Posicion("rr");
+                    i++;
+    
+                } else {
+    
+                    lista[listIndex++] = new Posicion(Character.toString(car));
+    
+                }
+    
+            }  else {
     
                 lista[listIndex++] = new Posicion(Character.toString(car)); 
     
@@ -56,38 +72,33 @@ public class Scrabble {
             i++; 
     
         }
-    
+
+        if(listIndex != i ) {
+
+            lista = Arrays.copyOf(lista, listIndex - 1);
+
+        }
+
         return lista;
     }
 
     public static int obterPuntuacion(String palabra) {
         int puntuacion = 0;
-        boolean caracterEspecial = false;
+        Posicion[] palabraPosicions = convertirEnPosicions(palabra);
 
-        for (int i = 0; i < palabra.length(); i++) {
+        for (int i = 0; i < palabraPosicions.length; i++) {
 
-            if(!caracterEspecial ) {
-
-                if(palabra.charAt(i) == 'c' && i != palabra.length() && palabra.charAt(i + 1) == 'h') {
-
-                    puntuacion += 67; // TODO: poner o valor correcto
-                    caracterEspecial = true;
-    
-                }
-
-            } 
-
-            puntuacion += Scrabble.puntuacionPoscicion(palabra.charAt(i) + "");
+            puntuacion += Scrabble.puntuacionPoscicion(palabraPosicions[i]);
 
         }
 
         return puntuacion;
     }
 
-    private static int puntuacionPoscicion(String cont) {
+    public static int puntuacionPoscicion(Posicion cont) {
         int puntos = 0;
 
-        switch (cont.toLowerCase()){
+        switch (cont.getContido().toLowerCase()){
             case "a":
             case "e":
             case "i":
@@ -129,9 +140,29 @@ public class Scrabble {
             case "ñ":
                 puntos = 10;
                 break;
+            case "ch":
+                puntos = 5;
+                break;
+            case "ll":
+            case "rr":
+                puntos = 8;
+                break;
         }
 
         return puntos;
     }
+
+    public static ArrayList<String> copiarArray(ArrayList<String> arr ) {
+
+        ArrayList<String> out = new ArrayList<>();
+
+        for (String posicion : arr) {
+            
+            out.add(posicion);
+
+        }
+
+        return out;
+    } 
 
 }

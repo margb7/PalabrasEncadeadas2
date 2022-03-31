@@ -236,7 +236,6 @@ public class Partida {
     }
 
     public void xogarPartida() {
-        // reiniciarDatos();
         boolean rematada = false;
         Xogador xogadorTurno;
 
@@ -254,6 +253,13 @@ public class Partida {
                 xogarTurno(xogadorTurno);
 
                 // final 
+
+                if(tablaLetras.size() == 0 && xogadorTurno.getLetras().size() == 0 ) {
+
+                    rematada = true;
+
+                }
+
                 if(xogadorTurno.getPuntos() >= puntosVictoria) {
 
                     rematada = true;
@@ -352,8 +358,10 @@ public class Partida {
 
                     if(podeColocarse(palabra, fila, columna, horizontal) ) {
 
-                        System.out.println("Podese colocar");
-                        colocarPalabra(Scrabble.convertirEnPosicions(palabra), fila, columna, horizontal);
+                        int puntos = colocarPalabra(Scrabble.convertirEnPosicions(palabra), fila, columna, horizontal);
+
+                        System.out.println("O xogador obtivo " + puntos + " puntos pola palabra");
+                        xogadorTurno.sumarPuntos(puntos);
 
                     } else {
 
@@ -388,6 +396,8 @@ public class Partida {
 
         }while(!correcto);
 
+        out--;  // Xa que as posicións amosadas ao xogador comezan por índice 1
+
         return out;
     }
 
@@ -398,7 +408,6 @@ public class Partida {
         if(out > xog.getComodins() ) {
 
             EntradaSaida.imprimirErro("Faltan comodíns ou letras para colocar esta palabra");
-
             out = -1;
 
         } else if(out != 0) {
@@ -422,7 +431,7 @@ public class Partida {
 
         if(horizontal ) {
 
-            if(fila + palabra.length() > NUM_FILAS) {
+            if((columna + palabra.length()) >= NUM_FILAS) {
 
                 out = false;
 
@@ -430,7 +439,7 @@ public class Partida {
 
         } else {
 
-            if(columna + palabra.length() > NUM_FILAS) {
+            if((fila + palabra.length() ) >= NUM_FILAS) {
 
                 out = false;
 
@@ -449,7 +458,7 @@ public class Partida {
         // do taboleiro
         out = comprobarForaBordes(palabra, horizontal, fila, columna); 
 
-        if(!out ) {
+        if(out ) {
 
             Posicion[] palabraPosicions = Scrabble.convertirEnPosicions(palabra);
             String str;
@@ -470,17 +479,39 @@ public class Partida {
     
             }
 
+
+            out =  numCoincidencias != 0 && numCoincidencias != palabra.length();
         }
 
         // Non poden coincidir a palabra dada exactamente cunha palabra do taboleiro
-        return numCoincidencias != 0 && numCoincidencias != palabra.length();
+        return out;
     }
 
-    private void colocarPalabra(Posicion[] palabra, byte fila, byte columna, boolean horizontal) {
+    /**
+     * Método para colocar unha palabra no taboleiro. Devolve o número de puntos obtidos ao colocar a palabra
+     * @param palabra a palabra a colocar
+     * @param fila a fila na que colocar a palabra
+     * @param columna a columna na que colocar a palabra
+     * @param horizontal se é true colocase a palabra horizontalmente.
+     * @return o número de puntos obtidos.
+     */
+    private int colocarPalabra(Posicion[] palabra, byte fila, byte columna, boolean horizontal) {
+
+        int puntos = 0;
 
         if(horizontal ) {
 
             for(int i = 0; i < palabra.length; i++ ) {
+
+                if(taboleiro[fila][columna + i].eMultiplicador() ) {
+
+                    puntos += Scrabble.puntuacionPoscicion(palabra[i]) * taboleiro[fila][columna + i].getMultiplicador();
+
+                } else {
+
+                    puntos += Scrabble.puntuacionPoscicion(palabra[i]);
+
+                }
 
                 taboleiro[fila][columna + i] = palabra[i];
 
@@ -490,12 +521,22 @@ public class Partida {
 
             for(int i = 0; i < palabra.length; i++ ) {
 
-                taboleiro[fila + i][columna] = palabra[i];
+                if(taboleiro[fila + i][columna].eMultiplicador() ) {
 
+                    puntos += Scrabble.puntuacionPoscicion(palabra[i]) * taboleiro[fila + i][columna].getMultiplicador();
+
+                } else {
+
+                    puntos += Scrabble.puntuacionPoscicion(palabra[i]);
+
+                }
+
+                taboleiro[fila + i][columna] = palabra[i];
             }
 
         }
 
+        return puntos;
     }
 
     private void imprimirInformacionTurno(Xogador xogador ) {
@@ -521,11 +562,11 @@ public class Partida {
 
             if(i < 10 ) {
 
-                System.out.print(" " + i + " ");
+                System.out.print(" " + EntradaSaida.stringColoreada(Integer.toString(i + 1), EntradaSaida.VIOLETA) + " ");
 
             } else {
 
-                System.out.print(i + " ");
+                System.out.print(EntradaSaida.stringColoreada(Integer.toString(i + 1), EntradaSaida.VIOLETA)+ " ");
 
             }
 
@@ -539,17 +580,29 @@ public class Partida {
 
             if((i + 1) < 10 ) {
 
-                System.out.print(" " + (i + 1) + " ");
+                System.out.print(" " + EntradaSaida.stringColoreada(Integer.toString(i + 1), EntradaSaida.VIOLETA) + " ");
 
             } else {
 
-                System.out.print(i + 1 + " ");
+                System.out.print(EntradaSaida.stringColoreada(Integer.toString(i + 1), EntradaSaida.VIOLETA) + " ");
 
             }
 
             for(Posicion p : lista ) {
 
-                System.out.print(p.estadoPosicion() + " ");
+                if(p.eMultiplicador() ) {
+
+                    System.out.print(EntradaSaida.stringColoreada(p.estadoPosicion(), EntradaSaida.CIAN) + " ");
+
+                } else if(!p.estaBaleiro()) {
+
+                    System.out.print(EntradaSaida.stringColoreada(p.estadoPosicion(), EntradaSaida.VERDE) + " ");
+
+                } else {
+
+                    System.out.print(EntradaSaida.stringColoreada(p.estadoPosicion(), EntradaSaida.CIAN) + " ");
+
+                }
 
             }
 

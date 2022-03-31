@@ -110,7 +110,7 @@ public class Xogador {
     /**
      * Método para saber se o xogador pode colocar a palabra. Devolve o número de comodins precisos para colocar a palabra
      * @param palabra palabra a palabra a colocar
-     * @return devolve:
+     * @return
      * <ul>
      *  <li><em>0</em>: se se pode colocar sen usar comodins</li>
      *  <li><em>num_comodins</em>: o numero de comodins que se precisan para colocar a palabra. O máximo valor é 
@@ -120,7 +120,7 @@ public class Xogador {
     public byte podeColocarPalabra(String palabra) {
         byte out = 0;
         Posicion[] palabraConvertida = Scrabble.convertirEnPosicions(palabra);
-        ArrayList<String> copiaLetras = (ArrayList<String>) letras.clone();
+        ArrayList<String> copiaLetras = Scrabble.copiarArray(letras);
 
         for(Posicion p : palabraConvertida ) {
 

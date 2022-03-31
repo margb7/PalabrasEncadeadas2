@@ -31,6 +31,14 @@ public class Posicion {
     }
 
     /**
+     * Getter do multiplicador da casilla.
+     * @return o valor do multiplicador
+     */
+    public byte getMultiplicador() {
+        return multiplicador;
+    }
+
+    /**
      * Getter do contido da casilla
      * @return o valor. Pode ser unha letra ou unha cadea vacía no caso de ser unha casilla vacía 
      * ou multiplicador.
