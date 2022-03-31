@@ -140,7 +140,7 @@ public class Partida {
     /**
      * Método para inicializar as casillas do taboleiro cos multiplicadores e casillas vacías.
      */
-    public void iniciarTaboleiro() {
+    private void iniciarTaboleiro() {
         Random rnd = new Random();
         float num;
 

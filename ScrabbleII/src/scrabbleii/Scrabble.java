@@ -8,15 +8,6 @@ public class Scrabble {
 
     public static final int LON_MIN = 3;
 
-    /**
-     * Método 
-     * @param palabra
-     * @return
-     */
-    public static boolean comprobarSaida(String palabra) {
-        return (palabra.equals("0"));
-    }
-
     public static boolean lonxitudeCorrecta(String palabra) {
         return (palabra.length() >= LON_MIN);
     }
