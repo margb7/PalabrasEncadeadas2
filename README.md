@@ -1,7 +1,7 @@
 # PalabrasEncadeadas2
 
 - Proxecto en netbeans con ant
-- Diagrama de clases creado con [draw.io](www.draw.io)
+- Diagrama de clases creado con [draw.io](https://app.diagrams.net)
 
 ## Especificación
 
