@@ -8,7 +8,7 @@ import java.util.Random;
  * @author a21mariogb
  */
 public class Partida {
-
+    
     private final int NUM_FILAS;
     private final float PROB_X2;
     private final float PROB_X3;
@@ -21,6 +21,7 @@ public class Partida {
     private byte maxRendicions;
     private int numTurno;
     private int puntosVictoria;
+    private boolean primerTurno;
 
     /**
      * Constructor para unha partida coas configuracións por defecto
@@ -239,6 +240,8 @@ public class Partida {
         boolean rematada = false;
         Xogador xogadorTurno;
 
+        primerTurno = true;
+
         do {
             //seguinte turno
             xogadorTurno = seguinteXogador();
@@ -284,6 +287,7 @@ public class Partida {
 
         boolean correcto;
         boolean horizontal;
+        boolean paso = false;
         byte comodinsNecesarios;
         byte fila, columna;
         String palabra;
@@ -298,83 +302,122 @@ public class Partida {
             
             if(palabra.equals("0") ) {
 
-                xogadorTurno.setRendicions((byte) (xogadorTurno.getRendicion() + 1) );
-                correcto = false;
+                xogadorTurno.engadirRendicion();
+                paso = true;
 
             }
 
             // Comprobacións da palabra
+            if(!paso ) {
 
-            if(correcto && !Scrabble.lonxitudeCorrecta(palabra)) {
-
-                correcto = false;
-
-                EntradaSaida.imprimirErro("A palabra ten que ter como mínimo " + Scrabble.LON_MIN + " caracteres");
-
-            } else {
-
-                comodinsNecesarios = comprobarComodins(xogadorTurno, palabra);
-
-                if(comodinsNecesarios == -1 ) {
+                if(!Scrabble.lonxitudeCorrecta(palabra)) {
 
                     correcto = false;
-
-                }
-
-                if(correcto ) {
-
-                    char op;
-
-                    // Posición da palabra
-
-                    System.out.println("Introduce o número de fila");
-                    fila = pedirPosicion();
-
-                    System.out.println("Introduce o número de columna");
-                    columna = pedirPosicion();
-
-                    System.out.println("Colocar horizontalmente ou verticalmente(H/V)");
-                    
-                    do {
-                        op = Character.toLowerCase(EntradaSaida.lerChar());
-
-                        if(op != 'h' && op != 'v' ) {
-
-                            EntradaSaida.imprimirErro("Ten que ser 'v' ou 'h'");
-
+    
+                    EntradaSaida.imprimirErro("A palabra ten que ter como mínimo " + Scrabble.LON_MIN + " caracteres");
+    
+                } else {
+    
+                    if(correcto ) {
+    
+                        char op;
+    
+                        // Posición da palabra
+    
+                        System.out.println("Introduce o número de fila");
+                        fila = pedirPosicion();
+    
+                        System.out.println("Introduce o número de columna");
+                        columna = pedirPosicion();
+    
+                        System.out.println("Colocar horizontalmente ou verticalmente(H/V)");
+                        
+                        do {
+                            op = Character.toLowerCase(EntradaSaida.lerChar());
+    
+                            if(op != 'h' && op != 'v' ) {
+    
+                                EntradaSaida.imprimirErro("Ten que ser 'v' ou 'h'");
+    
+                            }
+    
+                        } while(op != 'h' && op != 'v');
+    
+                        if(op == 'h' ) {
+    
+                            horizontal = true;
+    
+                        } else {
+    
+                            horizontal = false;
+    
                         }
+                         
+                        if(primerTurno )  {
 
-                    } while(op != 'h' && op != 'v');
+                            if(comprobarForaBordes(palabra, horizontal, fila, columna) ) {
 
-                    if(op == 'h' ) {
+                                comodinsNecesarios = comprobarComodins(xogadorTurno, palabra, fila, columna, horizontal);
+    
+                                if(comodinsNecesarios == -1 ) {
+                
+                                    correcto = false;
+                
+                                } else {
 
-                        horizontal = true;
+                                    int puntos = colocarPalabra(Scrabble.convertirEnPosicions(palabra), fila, columna, horizontal);
+        
+                                    System.out.println("O xogador obtivo " + puntos + " puntos pola palabra");
+                                    xogadorTurno.sumarPuntos(puntos);
+                                    primerTurno = false;
 
-                    } else {
+                                }
 
-                        horizontal = false;
+                            } else {
+        
+                                EntradaSaida.imprimirErro("Non se pode colocar");
+                                correcto = false;
+        
+                            }
 
+                        } else {
+
+                            if(podeColocarse(palabra, fila, columna, horizontal) ) {
+
+                                comodinsNecesarios = comprobarComodins(xogadorTurno, palabra, fila, columna, horizontal);
+
+                                if(comodinsNecesarios == -1 ) {
+        
+                                    correcto = false;
+                
+                                } else {
+
+                                    int puntos = colocarPalabra(Scrabble.convertirEnPosicions(palabra), fila, columna, horizontal);
+        
+                                System.out.println("O xogador obtivo " + puntos + " puntos pola palabra");
+                                xogadorTurno.sumarPuntos(puntos);
+
+                                }
+
+                            } else {
+        
+                                EntradaSaida.imprimirErro("Non se pode colocar");
+                                correcto = false;
+        
+                            }
+
+                            
+                            
+                        }
+                        
                     }
+    
+                } 
 
-                    if(podeColocarse(palabra, fila, columna, horizontal) ) {
+            }
+            
 
-                        int puntos = colocarPalabra(Scrabble.convertirEnPosicions(palabra), fila, columna, horizontal);
-
-                        System.out.println("O xogador obtivo " + puntos + " puntos pola palabra");
-                        xogadorTurno.sumarPuntos(puntos);
-
-                    } else {
-
-                        EntradaSaida.imprimirErro("Non se pode colocar");
-                        correcto = false;
-
-                    }
-                    
-                }
-
-            } 
-
-        } while(!correcto);
+        } while(!correcto && !paso);
 
     }
 
@@ -401,9 +444,11 @@ public class Partida {
         return out;
     }
 
-    private byte comprobarComodins(Xogador xog, String palabra) {
+    private byte comprobarComodins(Xogador xog, String palabra, byte fila, byte columna, boolean horizontal) {
 
-        byte out = xog.podeColocarPalabra(palabra);
+        byte out = xog.podeColocarPalabra(palabra, fila, columna, horizontal, taboleiro);
+
+        System.out.println(xog.podeColocarPalabra(palabra, fila, columna, horizontal, taboleiro));
 
         if(out > xog.getComodins() ) {
 
@@ -460,30 +505,52 @@ public class Partida {
 
         if(out ) {
 
-            Posicion[] palabraPosicions = Scrabble.convertirEnPosicions(palabra);
-            String str;
-
-            if(horizontal ) {
-
-                for(int i = 0; i < palabra.length(); i++ ) {
-
-                    str = palabraPosicions[i].getContido();
-
-                    if(str.equals(taboleiro[fila][columna + i].getContido()) ) {
-
-                        numCoincidencias++;
-
-                    } 
-    
-                }
-    
-            }
-
+            numCoincidencias = obterNumeroCoincidencias(palabra, fila, columna, horizontal);
 
             out =  numCoincidencias != 0 && numCoincidencias != palabra.length();
         }
 
         // Non poden coincidir a palabra dada exactamente cunha palabra do taboleiro
+        return out;
+    }
+
+    private byte obterNumeroCoincidencias(String palabra, byte fila, byte columna, boolean horizontal) {
+
+        byte out = 0;
+
+        Posicion[] palabraPosicions = Scrabble.convertirEnPosicions(palabra);
+            String str;
+
+        if(horizontal ) {
+
+            for(int i = 0; i < palabra.length(); i++ ) {
+
+                str = palabraPosicions[i].getContido();
+
+                if(str.equals(taboleiro[fila][columna + i].getContido()) ) {
+
+                    out++;
+
+                } 
+
+            }
+
+        } else {
+
+            for(int i = 0; i < palabra.length(); i++ ) {
+
+                str = palabraPosicions[i].getContido();
+
+                if(str.equals(taboleiro[fila + i][columna].getContido()) ) {
+
+                    out++;
+
+                } 
+
+            }
+
+        }
+
         return out;
     }
 
@@ -562,11 +629,11 @@ public class Partida {
 
             if(i < 10 ) {
 
-                System.out.print(" " + EntradaSaida.stringColoreada(Integer.toString(i + 1), EntradaSaida.VIOLETA) + " ");
+                System.out.print(" " + EntradaSaida.stringColoreada(Integer.toString(i), EntradaSaida.VIOLETA) + " ");
 
             } else {
 
-                System.out.print(EntradaSaida.stringColoreada(Integer.toString(i + 1), EntradaSaida.VIOLETA)+ " ");
+                System.out.print(EntradaSaida.stringColoreada(Integer.toString(i), EntradaSaida.VIOLETA)+ " ");
 
             }
 
@@ -606,10 +673,37 @@ public class Partida {
 
             }
 
+            if((i + 1) < 10 ) {
+
+                System.out.print(" " + EntradaSaida.stringColoreada(Integer.toString(i + 1), EntradaSaida.VIOLETA) + " ");
+
+            } else {
+
+                System.out.print(EntradaSaida.stringColoreada(Integer.toString(i + 1), EntradaSaida.VIOLETA) + " ");
+
+            }
+
             System.out.println("");
 
         }
 
+        System.out.print("   ");
+
+        for(int i = 1; i <= NUM_FILAS; i++ ) {      // numeración das columnas
+
+            if(i < 10 ) {
+
+                System.out.print(" " + EntradaSaida.stringColoreada(Integer.toString(i), EntradaSaida.VIOLETA) + " ");
+
+            } else {
+
+                System.out.print(EntradaSaida.stringColoreada(Integer.toString(i), EntradaSaida.VIOLETA)+ " ");
+
+            }
+
+        }
+
+        System.out.println("");
     }
 
     private Xogador seguinteXogador() {

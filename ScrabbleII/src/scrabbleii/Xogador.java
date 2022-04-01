@@ -117,16 +117,54 @@ public class Xogador {
      *  lonxitude da palabra no caso de que o xogador non teña ningunha letra</li>
      * </ul>
     */
-    public byte podeColocarPalabra(String palabra) {
+    public byte podeColocarPalabra(String palabra, byte fila, byte columna, boolean horizontal, Posicion[][] taboleiro) {
         byte out = 0;
         Posicion[] palabraConvertida = Scrabble.convertirEnPosicions(palabra);
         ArrayList<String> copiaLetras = Scrabble.copiarArray(letras);
+        String str;
+        boolean atopado;
 
         for(Posicion p : palabraConvertida ) {
 
             if(!copiaLetras.contains(p.getContido()) ) {
 
-                out++;
+                atopado = false;
+
+                if(horizontal ) {
+
+                    for(int i = 0; i < palabra.length() && !atopado; i++ ) {
+        
+                        str = p.getContido();
+        
+                        if(str.equals(taboleiro[fila][columna + i].getContido()) ) {
+        
+                            atopado = true;
+        
+                        } 
+        
+                    }
+        
+                } else {
+        
+                    for(int i = 0; i < palabra.length() && !atopado; i++ ) {
+        
+                        str = p.getContido();
+        
+                        if(str.equals(taboleiro[fila + i][columna].getContido()) ) {
+        
+                            atopado = true;
+        
+                        } 
+        
+                    }
+        
+                }
+
+                if(!atopado ) {
+
+                        out++;
+
+                }
                 
             } else {
 

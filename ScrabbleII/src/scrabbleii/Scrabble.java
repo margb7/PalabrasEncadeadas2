@@ -11,10 +11,20 @@ public class Scrabble {
 
     public static final int LON_MIN = 3;
 
+    /**
+     * Método para comprobar se a lonxitude dunha palabra é correcta.
+     * @param palabra a palabra para comprobar.
+     * @return
+     */
     public static boolean lonxitudeCorrecta(String palabra) {
         return (palabra.length() >= LON_MIN);
     }
 
+    /**
+     * Método para convertir en casillas unha palabra
+     * @param palabra a palabra para convertir
+     * @return o array de casillas da palabra
+     */
     public static Posicion[] convertirEnPosicions(String palabra ) {
         Posicion[] lista = new Posicion[palabra.length()];
         int listIndex = 0, i = 0;
@@ -82,6 +92,11 @@ public class Scrabble {
         return lista;
     }
 
+    /**
+     * Método para obter a puntuación dunha palabra
+     * @param palabra a palabra.
+     * @return o número de puntos.
+     */
     public static int obterPuntuacion(String palabra) {
         int puntuacion = 0;
         Posicion[] palabraPosicions = convertirEnPosicions(palabra);
@@ -95,6 +110,11 @@ public class Scrabble {
         return puntuacion;
     }
 
+    /**
+     * Método para obter a posición dunha casilla
+     * @param cont
+     * @return
+     */
     public static int puntuacionPoscicion(Posicion cont) {
         int puntos = 0;
 
@@ -152,6 +172,11 @@ public class Scrabble {
         return puntos;
     }
 
+    /**
+     * Método para copiar os elementos dun arraylist noutro. So copia a referencia.
+     * @param arr o arrayList a copiar.
+     * @return o novo arrayList.
+     */
     public static ArrayList<String> copiarArray(ArrayList<String> arr ) {
 
         ArrayList<String> out = new ArrayList<>();
