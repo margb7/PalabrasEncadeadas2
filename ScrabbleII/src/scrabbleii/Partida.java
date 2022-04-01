@@ -3,6 +3,8 @@ package scrabbleii;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.sound.sampled.SourceDataLine;
+
 /**
  * Clase onde se realiza a partida 
  * @author a21mariogb
@@ -724,7 +726,12 @@ public class Partida {
         return out;
     }
 
+    /**
+     * Método para imprimir os resultados da partida ao rematar
+     */
     private void amosarResultados() {
+
+        System.out.println("PARTIDA REMATADA\n");
 
         System.out.println("== RESULTADOS ==");
 
