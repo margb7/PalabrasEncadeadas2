@@ -208,12 +208,12 @@ public class EntradaSaida {
     }
 
     public static float pedirRango(float min, float max) {
-        int out;
+        float out;
         boolean correcto;
         
         do {
             correcto = true;
-            out = lerInt();
+            out = lerFloat();
             
             if(out < min || out > max ) {
                 
