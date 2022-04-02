@@ -11,7 +11,7 @@ public class Xogador {
     private String nome;
     private ArrayList<String> letras;
     private byte numComodins;
-    private byte pasos;
+    private byte rendicions;
     private int puntos;
 
     /**
@@ -22,7 +22,7 @@ public class Xogador {
         this.nome = nome;
         letras = new ArrayList<>();
         puntos = 0;
-        pasos = 0;
+        rendicions = 0;
         numComodins = 2;
     }
 
@@ -47,7 +47,7 @@ public class Xogador {
      * @return o numero de pasos.
      */
     public byte getRendicion() {
-        return pasos;
+        return rendicions;
     }
 
     /**
@@ -79,8 +79,8 @@ public class Xogador {
      * @param pasos o número de veces que pasou. Se é menor que 0 as veces 
      * que pasou pasarán a ser 0.
      */
-    public void setRendicions(byte pasos ) {
-        this.pasos = (pasos >= 0)? pasos : 0;
+    public void setRendicions(byte rendicions ) {
+        this.rendicions = (rendicions >= 0)? rendicions : 0;
     }
 
     /**
@@ -104,7 +104,7 @@ public class Xogador {
      * Método para incrementar o número de veces que o xogador pasou de turno.
      */
     public void engadirRendicion() {
-        this.pasos++;
+        this.rendicions++;
     }
 
     /**
@@ -126,22 +126,22 @@ public class Xogador {
      *  lonxitude da palabra no caso de que o xogador non teña ningunha letra</li>
      * </ul>
     */
-    public byte podeColocarPalabra(String palabra, byte fila, byte columna, boolean horizontal, Casilla[][] taboleiro) {
+    public byte comodinsPrecisos(String palabra, byte fila, byte columna, boolean horizontal, Casilla[][] taboleiro) {
         byte out = 0;
-        Casilla[] palabraConvertida = Scrabble.convertirEnPosicions(palabra);
+        Casilla[] palabraConvertida = Scrabble.convertirEnCasillas(palabra);
         ArrayList<String> copiaLetras = Utilidades.copiarArray(letras);
         String str;
         boolean atopado;
 
-        for(Casilla p : palabraConvertida ) {
+        for(Casilla c : palabraConvertida ) {
 
-            if(!copiaLetras.contains(p.getContido()) ) {
+            if(!copiaLetras.contains(c.getContido()) ) {
 
                 atopado = false;
 
                 for(int i = 0; i < palabra.length() && !atopado; i++ ) {
     
-                    str = p.getContido();
+                    str = c.getContido();
 
                     if(horizontal ) {
 
@@ -171,7 +171,7 @@ public class Xogador {
                 
             } else {
 
-                copiaLetras.remove(copiaLetras.indexOf(p.getContido()));
+                copiaLetras.remove(copiaLetras.indexOf(c.getContido()));
 
             }
 

@@ -24,7 +24,7 @@ public class Scrabble {
      * @param palabra a palabra para convertir
      * @return o array de casillas da palabra
      */
-    public static Casilla[] convertirEnPosicions(String palabra ) {
+    public static Casilla[] convertirEnCasillas(String palabra ) {
         Casilla[] lista = new Casilla[palabra.length()];
         int listIndex = 0, i = 0;
         char car;
@@ -92,29 +92,11 @@ public class Scrabble {
     }
 
     /**
-     * Método para obter a puntuación dunha palabra
-     * @param palabra a palabra.
-     * @return o número de puntos.
-     */
-    public static int obterPuntuacion(String palabra) {
-        int puntuacion = 0;
-        Casilla[] palabraPosicions = convertirEnPosicions(palabra);
-
-        for (int i = 0; i < palabraPosicions.length; i++) {
-
-            puntuacion += Scrabble.puntuacionPoscicion(palabraPosicions[i]);
-
-        }
-
-        return puntuacion;
-    }
-
-    /**
      * Método para obter a posición dunha casilla
      * @param cont
      * @return
      */
-    public static int puntuacionPoscicion(Casilla cont) {
+    public static int puntuacionCasilla(Casilla cont) {
         int puntos = 0;
 
         switch (cont.getContido().toLowerCase()){

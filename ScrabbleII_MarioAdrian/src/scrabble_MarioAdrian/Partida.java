@@ -302,7 +302,7 @@ public class Partida {
         do {
 
             System.out.println("Puntuacións: " + xogador1 + " e " + xogador2);
-            imprimirInformacionTurno(xogadorTurno);
+            imprimirInfoTurno(xogadorTurno);
             
             comodinsNecesarios = 0;
             correcto = true;
@@ -373,7 +373,7 @@ public class Partida {
                 
                                 } else {
 
-                                    int puntos = colocarPalabra(Scrabble.convertirEnPosicions(palabra), fila, columna, horizontal, xogadorTurno);
+                                    int puntos = colocarPalabra(Scrabble.convertirEnCasillas(palabra), fila, columna, horizontal, xogadorTurno);
         
                                     System.out.println("O xogador obtivo " + puntos + " puntos pola palabra");
                                     xogadorTurno.sumarPuntos(puntos);
@@ -401,7 +401,7 @@ public class Partida {
                 
                                 } else {
 
-                                    int puntos = colocarPalabra(Scrabble.convertirEnPosicions(palabra), fila, columna, horizontal, xogadorTurno);
+                                    int puntos = colocarPalabra(Scrabble.convertirEnCasillas(palabra), fila, columna, horizontal, xogadorTurno);
         
                                     System.out.println("O xogador obtivo " + puntos + " puntos pola palabra");
                                     xogadorTurno.sumarPuntos(puntos);
@@ -468,9 +468,9 @@ public class Partida {
      */
     private byte comprobarComodins(Xogador xog, String palabra, byte fila, byte columna, boolean horizontal) {
 
-        byte out = xog.podeColocarPalabra(palabra, fila, columna, horizontal, taboleiro);
+        byte out = xog.comodinsPrecisos(palabra, fila, columna, horizontal, taboleiro);
 
-        System.out.println(xog.podeColocarPalabra(palabra, fila, columna, horizontal, taboleiro));
+        System.out.println(xog.comodinsPrecisos(palabra, fila, columna, horizontal, taboleiro));
 
         if(out > xog.getComodins() ) {
 
@@ -566,12 +566,12 @@ public class Partida {
     private byte obterNumeroCoincidencias(String palabra, byte fila, byte columna, boolean horizontal) {
 
         byte out = 0;
-        Casilla[] palabraPosicions = Scrabble.convertirEnPosicions(palabra);
+        Casilla[] palabraCasillas = Scrabble.convertirEnCasillas(palabra);
         String str;
 
-        for(int i = 0; i < palabraPosicions.length; i++ ) {
+        for(int i = 0; i < palabraCasillas.length; i++ ) {
 
-            str = palabraPosicions[i].getContido();
+            str = palabraCasillas[i].getContido();
 
             if(horizontal ) {
 
@@ -625,11 +625,11 @@ public class Partida {
 
             if(cas.eMultiplicador() ) {
 
-                puntos += Scrabble.puntuacionPoscicion(palabra[i]) * cas.getMultiplicador();
+                puntos += Scrabble.puntuacionCasilla(palabra[i]) * cas.getMultiplicador();
 
             } else {
 
-                puntos += Scrabble.puntuacionPoscicion(palabra[i]);
+                puntos += Scrabble.puntuacionCasilla(palabra[i]);
 
             }
 
@@ -654,17 +654,17 @@ public class Partida {
 
         // Quitar letras usadas
 
-        for(Casilla p : palabra ) {
+        for(Casilla c : palabra ) {
 
-            if(xogador.getLetras().contains(p.getContido()) ) {
+            if(xogador.getLetras().contains(c.getContido()) ) {
 
-                if(!coincidencias.contains(p.getContido()) ) {  // So quitar se non se atopan nas coincidencias
+                if(!coincidencias.contains(c.getContido()) ) {  // So quitar se non se atopan nas coincidencias
 
-                    xogador.getLetras().remove(p.getContido());
+                    xogador.getLetras().remove(c.getContido());
 
                 } else {    // Quitar das coincidencias
 
-                    coincidencias.remove(p.getContido());
+                    coincidencias.remove(c.getContido());
 
                 }
 
@@ -679,7 +679,7 @@ public class Partida {
      * Método que se imprime antes de pedir unha palabra para amosar información do turno e o xogador
      * @param xogador o xogador do turno.
      */
-    private void imprimirInformacionTurno(Xogador xogador ) {
+    private void imprimirInfoTurno(Xogador xogador ) {
 
         System.out.println("_______________________");
         System.out.println("#TABOLEIRO#");
@@ -748,19 +748,19 @@ public class Partida {
 
             }
 
-            for(Casilla p : lista ) {      // Imprimir as casillas da fila
+            for(Casilla c : lista ) {      // Imprimir as casillas da fila
 
-                if(p.eMultiplicador() ) {
+                if(c.eMultiplicador() ) {
 
-                    System.out.print(EntradaSaida.stringColoreada(p.valorMostra(), EntradaSaida.CIAN) + " ");
+                    System.out.print(EntradaSaida.stringColoreada(c.valorMostra(), EntradaSaida.CIAN) + " ");
 
-                } else if(!p.estaBaleiro()) {
+                } else if(!c.estaBaleiro()) {
 
-                    System.out.print(EntradaSaida.stringColoreada(p.valorMostra(), EntradaSaida.VERDE) + " ");
+                    System.out.print(EntradaSaida.stringColoreada(c.valorMostra(), EntradaSaida.VERDE) + " ");
 
                 } else {
 
-                    System.out.print(EntradaSaida.stringColoreada(p.valorMostra(), EntradaSaida.CIAN) + " ");
+                    System.out.print(EntradaSaida.stringColoreada(c.valorMostra(), EntradaSaida.CIAN) + " ");
 
                 }
 
