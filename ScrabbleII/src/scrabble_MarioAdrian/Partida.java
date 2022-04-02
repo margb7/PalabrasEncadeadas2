@@ -1,4 +1,4 @@
-package scrabbleii;
+package scrabble_MarioAdrian;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -14,7 +14,7 @@ public class Partida {
     private final float PROB_X3;
     private final float PROB_X4;
 
-    private Posicion[][] taboleiro;
+    private Casilla[][] taboleiro;
     private ArrayList<String> tablaLetras;
     private Xogador xogador1;
     private Xogador xogador2;
@@ -145,7 +145,7 @@ public class Partida {
         Random rnd = new Random();
         float num;
 
-        taboleiro = new Posicion[NUM_FILAS][NUM_FILAS];
+        taboleiro = new Casilla[NUM_FILAS][NUM_FILAS];
 
         for(int i = 0; i < NUM_FILAS; i++ ) {
 
@@ -155,19 +155,19 @@ public class Partida {
 
                 if(num < PROB_X4 ) {
 
-                    taboleiro[i][j] = new Posicion("", (byte) 4);
+                    taboleiro[i][j] = new Casilla("", (byte) 4);
 
                 } else if(num < PROB_X3 ) {
 
-                    taboleiro[i][j] = new Posicion("", (byte) 3);
+                    taboleiro[i][j] = new Casilla("", (byte) 3);
 
                 } else if(num < PROB_X2) {
                 
-                    taboleiro[i][j] = new Posicion("", (byte) 2);
+                    taboleiro[i][j] = new Casilla("", (byte) 2);
 
                 }else {
 
-                    taboleiro[i][j] = new Posicion("", (byte) 1);
+                    taboleiro[i][j] = new Casilla("", (byte) 1);
 
                 }
 
@@ -566,7 +566,7 @@ public class Partida {
     private byte obterNumeroCoincidencias(String palabra, byte fila, byte columna, boolean horizontal) {
 
         byte out = 0;
-        Posicion[] palabraPosicions = Scrabble.convertirEnPosicions(palabra);
+        Casilla[] palabraPosicions = Scrabble.convertirEnPosicions(palabra);
         String str;
 
         for(int i = 0; i < palabraPosicions.length; i++ ) {
@@ -604,11 +604,11 @@ public class Partida {
      * @param horizontal se é true colocase a palabra horizontalmente.
      * @return o número de puntos obtidos.
      */
-    private int colocarPalabra(Posicion[] palabra, byte fila, byte columna, boolean horizontal, Xogador xogador) {
+    private int colocarPalabra(Casilla[] palabra, byte fila, byte columna, boolean horizontal, Xogador xogador) {
 
         int puntos = 0;
         ArrayList<String> coincidencias = new ArrayList<>();
-        Posicion cas;
+        Casilla cas;
 
 
         for(int i = 0; i < palabra.length; i++ ) {
@@ -654,7 +654,7 @@ public class Partida {
 
         // Quitar letras usadas
 
-        for(Posicion p : palabra ) {
+        for(Casilla p : palabra ) {
 
             if(xogador.getLetras().contains(p.getContido()) ) {
 
@@ -736,7 +736,7 @@ public class Partida {
 
         for(int i = 0; i < NUM_FILAS; i++ ) {   // Imprimir os valores do taboleiro fila por fila
 
-            Posicion[] lista = taboleiro[i];
+            Casilla[] lista = taboleiro[i];
 
             if((i + 1) < 10 ) {     // Imprimir o número de fila 
 
@@ -748,7 +748,7 @@ public class Partida {
 
             }
 
-            for(Posicion p : lista ) {      // Imprimir as casillas da fila
+            for(Casilla p : lista ) {      // Imprimir as casillas da fila
 
                 if(p.eMultiplicador() ) {
 

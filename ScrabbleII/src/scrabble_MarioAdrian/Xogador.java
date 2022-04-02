@@ -1,4 +1,4 @@
-package scrabbleii;
+package scrabble_MarioAdrian;
 
 import java.util.ArrayList;
 
@@ -126,14 +126,14 @@ public class Xogador {
      *  lonxitude da palabra no caso de que o xogador non teña ningunha letra</li>
      * </ul>
     */
-    public byte podeColocarPalabra(String palabra, byte fila, byte columna, boolean horizontal, Posicion[][] taboleiro) {
+    public byte podeColocarPalabra(String palabra, byte fila, byte columna, boolean horizontal, Casilla[][] taboleiro) {
         byte out = 0;
-        Posicion[] palabraConvertida = Scrabble.convertirEnPosicions(palabra);
+        Casilla[] palabraConvertida = Scrabble.convertirEnPosicions(palabra);
         ArrayList<String> copiaLetras = Utilidades.copiarArray(letras);
         String str;
         boolean atopado;
 
-        for(Posicion p : palabraConvertida ) {
+        for(Casilla p : palabraConvertida ) {
 
             if(!copiaLetras.contains(p.getContido()) ) {
 

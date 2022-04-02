@@ -1,4 +1,4 @@
-package scrabbleii;
+package scrabble_MarioAdrian;
 
 import java.util.Arrays;
 
@@ -24,8 +24,8 @@ public class Scrabble {
      * @param palabra a palabra para convertir
      * @return o array de casillas da palabra
      */
-    public static Posicion[] convertirEnPosicions(String palabra ) {
-        Posicion[] lista = new Posicion[palabra.length()];
+    public static Casilla[] convertirEnPosicions(String palabra ) {
+        Casilla[] lista = new Casilla[palabra.length()];
         int listIndex = 0, i = 0;
         char car;
     
@@ -37,12 +37,12 @@ public class Scrabble {
     
                 if(i != palabra.length() - 1 && palabra.charAt(i + 1) == 'h') {
     
-                    lista[listIndex++] = new Posicion("ch");
+                    lista[listIndex++] = new Casilla("ch");
                     i++;
     
                 } else {
     
-                    lista[listIndex++] = new Posicion(Character.toString(car));
+                    lista[listIndex++] = new Casilla(Character.toString(car));
     
                 }
     
@@ -50,12 +50,12 @@ public class Scrabble {
     
                 if(i != palabra.length() - 1 && palabra.charAt(i + 1) == 'l') {
     
-                    lista[listIndex++] = new Posicion("ll");
+                    lista[listIndex++] = new Casilla("ll");
                     i++;
     
                 } else {
     
-                    lista[listIndex++] = new Posicion(Character.toString(car));
+                    lista[listIndex++] = new Casilla(Character.toString(car));
     
                 }
     
@@ -63,18 +63,18 @@ public class Scrabble {
     
                 if(i != palabra.length() - 1 && palabra.charAt(i + 1) == 'r') {
     
-                    lista[listIndex++] = new Posicion("rr");
+                    lista[listIndex++] = new Casilla("rr");
                     i++;
     
                 } else {
     
-                    lista[listIndex++] = new Posicion(Character.toString(car));
+                    lista[listIndex++] = new Casilla(Character.toString(car));
     
                 }
     
             }  else {
     
-                lista[listIndex++] = new Posicion(Character.toString(car)); 
+                lista[listIndex++] = new Casilla(Character.toString(car)); 
     
             }
     
@@ -98,7 +98,7 @@ public class Scrabble {
      */
     public static int obterPuntuacion(String palabra) {
         int puntuacion = 0;
-        Posicion[] palabraPosicions = convertirEnPosicions(palabra);
+        Casilla[] palabraPosicions = convertirEnPosicions(palabra);
 
         for (int i = 0; i < palabraPosicions.length; i++) {
 
@@ -114,7 +114,7 @@ public class Scrabble {
      * @param cont
      * @return
      */
-    public static int puntuacionPoscicion(Posicion cont) {
+    public static int puntuacionPoscicion(Casilla cont) {
         int puntos = 0;
 
         switch (cont.getContido().toLowerCase()){

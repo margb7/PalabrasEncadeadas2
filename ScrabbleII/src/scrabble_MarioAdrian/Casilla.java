@@ -1,10 +1,10 @@
-package scrabbleii;
+package scrabble_MarioAdrian;
 
 
 /**
  * Clase que contén a información de cada unha das casillas do taboleiro
  */
-public class Posicion {
+public class Casilla {
 
     private String contido;
     private byte multiplicador;
@@ -13,7 +13,7 @@ public class Posicion {
     /**
      * Constructor para unha casilla vacía.
      */
-    public Posicion() {
+    public Casilla() {
         this("", (byte) 1);
     }
 
@@ -22,7 +22,7 @@ public class Posicion {
      * casilla especial
      * @param contido o contido da casilla
      */
-    public Posicion(String contido ) {
+    public Casilla(String contido ) {
         this(contido, (byte)1);
     }
 
@@ -31,7 +31,7 @@ public class Posicion {
      * @param contido 
      * @param multiplicador
      */
-    public Posicion(String contido, byte multiplicador) {
+    public Casilla(String contido, byte multiplicador) {
         this.contido = contido;
         this.multiplicador = multiplicador;
     }

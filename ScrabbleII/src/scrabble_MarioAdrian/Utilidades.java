@@ -1,4 +1,4 @@
-package scrabbleii;
+package scrabble_MarioAdrian;
 
 import java.util.ArrayList;
 

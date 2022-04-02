@@ -1,4 +1,4 @@
-package scrabbleii;
+package scrabble_MarioAdrian;
 
 /**
  * Clase main do Scrabble.
@@ -12,7 +12,7 @@ package scrabbleii;
  * </ul>
  * @author mariogb
 */
-public class ScrabbleII {
+public class ScrabbleII_MarioAdrian {
 
     /**
      * @param args the command line arguments
