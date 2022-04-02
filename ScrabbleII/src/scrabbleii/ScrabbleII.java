@@ -23,9 +23,10 @@ public class ScrabbleII {
         Partida p;
         Xogador x1, x2;
         
-        System.out.println("  ==============");
-        System.out.println("==== SCRABBLE ====");
-        System.out.println("  ==============");
+        EntradaSaida.imprimirCor("  ==============", EntradaSaida.VERDE);
+        EntradaSaida.imprimirCor("==== SCRABBLE ====", EntradaSaida.VERDE);
+        EntradaSaida.imprimirCor("  ==============", EntradaSaida.VERDE);
+        System.out.println("");
 
         do {
 
@@ -35,7 +36,7 @@ public class ScrabbleII {
             System.out.println("Xogador 2 : ");
             x2 = pedirXogador();
 
-            System.out.println("Queres configurar axustes da partida? (S / N)");
+            System.out.println("\nQueres configurar axustes da partida? (S / N)");
 
             if(EntradaSaida.pedirConfirmacion() ) {
 

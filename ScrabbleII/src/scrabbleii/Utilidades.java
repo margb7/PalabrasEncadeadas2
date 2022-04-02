@@ -2,6 +2,9 @@ package scrabbleii;
 
 import java.util.ArrayList;
 
+/**
+ * Clase que contén utilidades para o programa
+ */
 public class Utilidades {
     
     /**

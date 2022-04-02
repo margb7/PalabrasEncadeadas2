@@ -92,6 +92,15 @@ public class Xogador {
     }
 
     /**
+     * Método para restar ao xogador comodíns.
+     * @param val o número de comodíns que se queren restar.
+     */
+    public void restarComodins(byte val ) {
+        numComodins = (byte) (numComodins - val);
+        numComodins = (numComodins >= 0)? numComodins : 0;
+    }
+
+    /**
      * Método para incrementar o número de veces que o xogador pasou de turno.
      */
     public void engadirRendicion() {

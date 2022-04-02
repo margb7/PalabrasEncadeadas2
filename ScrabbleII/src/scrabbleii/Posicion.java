@@ -26,8 +26,6 @@ public class Posicion {
         this(contido, (byte)1);
     }
 
-    // TODO: Reorganizar (problema co significado de "contido")
-
     /**
      * Constructor principalmente usado para crear casillas especiais
      * @param contido 

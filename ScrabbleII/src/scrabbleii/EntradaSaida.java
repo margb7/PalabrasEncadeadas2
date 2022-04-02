@@ -255,6 +255,17 @@ public class EntradaSaida {
     public static void imprimirCor(String mensaxe, String cor ) {
         System.out.println(stringColoreada(mensaxe, cor));
     }
+
+    public static void imprimirLine(char c, int nVeces ) {
+
+        for(int i = 0; i < nVeces; i++ ) {
+
+            System.out.print(c);
+
+        }
+
+        System.out.println("");
+    }
     
     public static String stringColoreada(String mensaxe, String cor) {
         
