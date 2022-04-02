@@ -525,7 +525,7 @@ public class Partida {
 
         if(horizontal ) {
 
-            for(int i = 0; i < palabra.length(); i++ ) {
+            for(int i = 0; i < palabraPosicions.length; i++ ) {
 
                 str = palabraPosicions[i].getContido();
 
@@ -539,7 +539,7 @@ public class Partida {
 
         } else {
 
-            for(int i = 0; i < palabra.length(); i++ ) {
+            for(int i = 0; i < palabraPosicions.length; i++ ) {
 
                 str = palabraPosicions[i].getContido();
 

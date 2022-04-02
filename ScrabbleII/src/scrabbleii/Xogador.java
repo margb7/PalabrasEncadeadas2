@@ -108,7 +108,7 @@ public class Xogador {
     }
 
     /**
-     * Método para saber se o xogador pode colocar a palabra. Devolve o número de comodins precisos para colocar a palabra
+     * Devolve o número de comodins precisos para colocar a palabra.
      * @param palabra palabra a palabra a colocar
      * @return
      * <ul>
@@ -120,7 +120,7 @@ public class Xogador {
     public byte podeColocarPalabra(String palabra, byte fila, byte columna, boolean horizontal, Posicion[][] taboleiro) {
         byte out = 0;
         Posicion[] palabraConvertida = Scrabble.convertirEnPosicions(palabra);
-        ArrayList<String> copiaLetras = Scrabble.copiarArray(letras);
+        ArrayList<String> copiaLetras = Utilidades.copiarArray(letras);
         String str;
         boolean atopado;
 
@@ -130,39 +130,33 @@ public class Xogador {
 
                 atopado = false;
 
-                if(horizontal ) {
+                for(int i = 0; i < palabra.length() && !atopado; i++ ) {
+    
+                    str = p.getContido();
 
-                    for(int i = 0; i < palabra.length() && !atopado; i++ ) {
-        
-                        str = p.getContido();
-        
+                    if(horizontal ) {
+
                         if(str.equals(taboleiro[fila][columna + i].getContido()) ) {
-        
+    
                             atopado = true;
         
                         } 
-        
-                    }
-        
-                } else {
-        
-                    for(int i = 0; i < palabra.length() && !atopado; i++ ) {
-        
-                        str = p.getContido();
-        
+
+                    } else {
+
                         if(str.equals(taboleiro[fila + i][columna].getContido()) ) {
-        
+    
                             atopado = true;
         
                         } 
-        
+
                     }
-        
+    
                 }
 
                 if(!atopado ) {
 
-                        out++;
+                    out++;
 
                 }
                 

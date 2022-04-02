@@ -1,6 +1,5 @@
 package scrabbleii;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -85,7 +84,7 @@ public class Scrabble {
 
         if(listIndex != i ) {
 
-            lista = Arrays.copyOf(lista, listIndex - 1);
+            lista = Arrays.copyOf(lista, listIndex );        // REVISAR ESTO
 
         }
 
@@ -171,23 +170,5 @@ public class Scrabble {
 
         return puntos;
     }
-
-    /**
-     * Método para copiar os elementos dun arraylist noutro. So copia a referencia.
-     * @param arr o arrayList a copiar.
-     * @return o novo arrayList.
-     */
-    public static ArrayList<String> copiarArray(ArrayList<String> arr ) {
-
-        ArrayList<String> out = new ArrayList<>();
-
-        for (String posicion : arr) {
-            
-            out.add(posicion);
-
-        }
-
-        return out;
-    } 
 
 }
