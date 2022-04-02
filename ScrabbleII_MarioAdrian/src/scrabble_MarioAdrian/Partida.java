@@ -482,8 +482,6 @@ public class Partida {
 
         byte out = xog.comodinsPrecisos(palabra, fila, columna, horizontal, taboleiro);
 
-        System.out.println(xog.comodinsPrecisos(palabra, fila, columna, horizontal, taboleiro));
-
         if(out > xog.getComodins() ) {
 
             EntradaSaida.imprimirErro("Faltan comodíns ou letras para colocar esta palabra");
