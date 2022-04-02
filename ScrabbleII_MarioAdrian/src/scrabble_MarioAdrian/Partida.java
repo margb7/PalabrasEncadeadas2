@@ -332,11 +332,23 @@ public class Partida {
     
                         // Posición da palabra
     
-                        System.out.println("Introduce o número de fila");
-                        fila = pedirPosicion();
-    
-                        System.out.println("Introduce o número de columna");
-                        columna = pedirPosicion();
+                        if(primerTurno ) {
+
+                            fila = (byte) (NUM_FILAS / 2);
+                            columna = (byte) (NUM_FILAS / 2);
+
+                            System.out.println("Como é o primer turno colócase na fila " + (fila + 1) + " e columna " + (columna + 1));
+                                                                                            // +1 xa que o índice do usuario comeza en 1
+
+                        } else {
+
+                            System.out.println("Introduce o número de fila");
+                            fila = pedirPosicion();
+        
+                            System.out.println("Introduce o número de columna");
+                            columna = pedirPosicion();
+
+                        }
     
                         System.out.println("Colocar horizontalmente ou verticalmente(H/V)");
                         
