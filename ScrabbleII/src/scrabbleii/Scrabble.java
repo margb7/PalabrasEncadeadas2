@@ -84,7 +84,7 @@ public class Scrabble {
 
         if(listIndex != i ) {
 
-            lista = Arrays.copyOf(lista, listIndex );        // REVISAR ESTO
+            lista = Arrays.copyOf(lista, listIndex );        
 
         }
 

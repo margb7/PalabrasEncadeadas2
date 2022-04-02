@@ -238,6 +238,9 @@ public class Partida {
 
     }
 
+    /**
+     * Método que se encarga de xestionar unha partida enteira.
+     */
     public void xogarPartida() {
         boolean rematada = false;
         Xogador xogadorTurno;
@@ -285,6 +288,10 @@ public class Partida {
 
     }
 
+    /**
+     * Método que se encarga de xestionar o que ocorre durante un turno.
+     * @param xogadorTurno o xogador do turno.
+     */
     private void xogarTurno(Xogador xogadorTurno) {
 
         boolean correcto;
@@ -423,6 +430,10 @@ public class Partida {
 
     }
 
+    /**
+     * Método para pedir unha posición ao usuario
+     * @return a posición dentro dos límites do taboleiro.
+     */
     private byte pedirPosicion() {
         byte out = 0;
         boolean correcto;
@@ -446,6 +457,16 @@ public class Partida {
         return out;
     }
 
+    /**
+     * Método que comproba se o xogador ten os comodíns precisos para colocar a palabra. Se precisa usar algún comodín 
+     * pediralle ao xogador unha confirmación.
+     * @param xog o xogador que quere colocar a palabra.
+     * @param palabra a palabra.
+     * @param fila a fila onde quere colocar a palabra.
+     * @param columna a columna onde quere colocar a palabra.
+     * @param horizontal true se quere colocar a palabra en horizontal.
+     * @return -1 se non pode ou non quere colocar a palabra ou o número de comodíns que finalmente usará para colocar a palabra.
+     */
     private byte comprobarComodins(Xogador xog, String palabra, byte fila, byte columna, boolean horizontal) {
 
         byte out = xog.podeColocarPalabra(palabra, fila, columna, horizontal, taboleiro);
@@ -472,6 +493,14 @@ public class Partida {
         return out;
     }
 
+    /**
+     * Método que comproba se unha palabra se sae dos límites do taboleiro.
+     * @param palabra a palabra para comprobar.
+     * @param horizontal se se coloca horizontalmente.
+     * @param fila a fila onde se coloca.
+     * @param columna a columna onde se coloca.
+     * @return true se non se sae dos límites.
+     */
     private boolean comprobarForaBordes(String palabra, boolean horizontal, byte fila, byte columna ) {
 
         boolean out = true;
@@ -497,6 +526,16 @@ public class Partida {
         return out;
     }
 
+    /**
+     * Método que comproba se unha palabra pode colocarse no taboleiro. Para que unha palabra se poda colocar
+     * ten que entrar dentro dos límites do taboleiro e ten que coincidir cunha das letras xa colocadas polo 
+     * menos unha vez e como máximo a lonxitude da palabra -1.
+     * @param palabra a palabra para comprobar.
+     * @param fila a fila onde se quere colocar.
+     * @param columna a columna onde se quere colocar.
+     * @param horizontal se se coloca horizontal ou verticalmente.
+     * @return true se se pode colocar.
+     */
     private boolean podeColocarse(String palabra, byte fila, byte columna, boolean horizontal) {
         boolean out = true;
         byte numCoincidencias = 0;
@@ -516,18 +555,26 @@ public class Partida {
         return out;
     }
 
+    /**
+     * Método que calcula o número de letras da palabra que coinciden coas letras colocadas 
+     * no taboleiro.
+     * @param palabra a palabra para comprobar.
+     * @param fila o número de fila.
+     * @param columna o número de columna.
+     * @param horizontal se a palabra se vai colocar horizontal ou verticalmente.
+     * @return o número de coincidencias
+     */
     private byte obterNumeroCoincidencias(String palabra, byte fila, byte columna, boolean horizontal) {
 
         byte out = 0;
-
         Posicion[] palabraPosicions = Scrabble.convertirEnPosicions(palabra);
-            String str;
+        String str;
 
-        if(horizontal ) {
+        for(int i = 0; i < palabraPosicions.length; i++ ) {
 
-            for(int i = 0; i < palabraPosicions.length; i++ ) {
+            str = palabraPosicions[i].getContido();
 
-                str = palabraPosicions[i].getContido();
+            if(horizontal ) {
 
                 if(str.equals(taboleiro[fila][columna + i].getContido()) ) {
 
@@ -535,13 +582,7 @@ public class Partida {
 
                 } 
 
-            }
-
-        } else {
-
-            for(int i = 0; i < palabraPosicions.length; i++ ) {
-
-                str = palabraPosicions[i].getContido();
+            } else {
 
                 if(str.equals(taboleiro[fila + i][columna].getContido()) ) {
 
@@ -549,7 +590,7 @@ public class Partida {
 
                 } 
 
-            }
+            } 
 
         }
 
@@ -608,6 +649,10 @@ public class Partida {
         return puntos;
     }
 
+    /**
+     * Método que se imprime antes de pedir unha palabra para amosar información do turno e o xogador
+     * @param xogador o xogador do turno.
+     */
     private void imprimirInformacionTurno(Xogador xogador ) {
 
         System.out.println("_______________________");
@@ -618,11 +663,14 @@ public class Partida {
 
         System.out.println("_______________________");
         System.out.println("Turno de " + xogador.getNome());
-        System.out.println("Letras : " + xogador.getLetras());
+        System.out.println("Letras : " + xogador.getLetras() + " Comodíns: " + xogador.getComodins());
         System.out.println("Introduce unha palabra cun mínimo de " + Scrabble.LON_MIN + " letras ou \"0\" para rendirte");
 
     }
 
+    /**
+     * Método para imprimir o taboleiro durante a partida
+     */
     private void imprimirTaboleiro() {
 
         System.out.print("   ");
@@ -643,11 +691,11 @@ public class Partida {
 
         System.out.println("");
 
-        for(int i = 0; i < NUM_FILAS; i++ ) {
+        for(int i = 0; i < NUM_FILAS; i++ ) {   // Imprimir os valores do taboleiro fila por fila
 
             Posicion[] lista = taboleiro[i];
 
-            if((i + 1) < 10 ) {
+            if((i + 1) < 10 ) {     // Imprimir o número de fila 
 
                 System.out.print(" " + EntradaSaida.stringColoreada(Integer.toString(i + 1), EntradaSaida.VIOLETA) + " ");
 
@@ -657,25 +705,25 @@ public class Partida {
 
             }
 
-            for(Posicion p : lista ) {
+            for(Posicion p : lista ) {      // Imprimir as casillas da fila
 
                 if(p.eMultiplicador() ) {
 
-                    System.out.print(EntradaSaida.stringColoreada(p.estadoPosicion(), EntradaSaida.CIAN) + " ");
+                    System.out.print(EntradaSaida.stringColoreada(p.valorMostra(), EntradaSaida.CIAN) + " ");
 
                 } else if(!p.estaBaleiro()) {
 
-                    System.out.print(EntradaSaida.stringColoreada(p.estadoPosicion(), EntradaSaida.VERDE) + " ");
+                    System.out.print(EntradaSaida.stringColoreada(p.valorMostra(), EntradaSaida.VERDE) + " ");
 
                 } else {
 
-                    System.out.print(EntradaSaida.stringColoreada(p.estadoPosicion(), EntradaSaida.CIAN) + " ");
+                    System.out.print(EntradaSaida.stringColoreada(p.valorMostra(), EntradaSaida.CIAN) + " ");
 
                 }
 
             }
 
-            if((i + 1) < 10 ) {
+            if((i + 1) < 10 ) {         // Imprimir o número de fila tamén ao final
 
                 System.out.print(" " + EntradaSaida.stringColoreada(Integer.toString(i + 1), EntradaSaida.VIOLETA) + " ");
 
@@ -708,6 +756,10 @@ public class Partida {
         System.out.println("");
     }
 
+    /**
+     * Método que devolve o seguinte xogador do turno.
+     * @return o xogador.
+     */
     private Xogador seguinteXogador() {
         Xogador out;
         
@@ -732,7 +784,6 @@ public class Partida {
     private void amosarResultados() {
 
         System.out.println("PARTIDA REMATADA\n");
-
         System.out.println("== RESULTADOS ==");
 
         if(xogador1.getRendicion() == maxRendicions ) {

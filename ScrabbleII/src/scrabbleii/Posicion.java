@@ -9,8 +9,16 @@ public class Posicion {
     private String contido;
     private byte multiplicador;
 
+
     /**
-     * Constructor para unha posición vacía ou con contido pero que non sexa unha
+     * Constructor para unha casilla vacía.
+     */
+    public Posicion() {
+        this("", (byte) 1);
+    }
+
+    /**
+     * Constructor para unha casilla vacía ou con contido pero que non sexa unha
      * casilla especial
      * @param contido o contido da casilla
      */
@@ -63,12 +71,15 @@ public class Posicion {
         return (multiplicador != 1);
     }
 
-    // TODO: WTF es esto ---> debería ser toString probablemente
-
     /**
-     * @return
+     * Devolve a representación da casilla para mostrala no taboleiro.
+     * @return <ul>
+     *  <li>"  " se é unha casilla vacía</li>
+     *  <li>"vv" se non é unha casilla vacía ou unha casilla especial (vv representa o valor da casilla)</li>
+     *  <li>"x2", "x3", "x4" se é un multiplicador.</li> 
+     * </ul>
      */
-    public String estadoPosicion() {
+    public String valorMostra() {
 
         String out;
 
