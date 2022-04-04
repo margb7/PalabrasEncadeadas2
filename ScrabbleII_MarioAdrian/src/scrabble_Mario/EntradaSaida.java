@@ -1,4 +1,4 @@
-package scrabble_MarioAdrian;
+package scrabble_Mario;
 
 import java.util.Scanner;
 
@@ -10,7 +10,7 @@ public class EntradaSaida {
     
     private static final Scanner input = new Scanner(System.in,"ISO-8859-1");
     
-    private static final String RESET = "\u001B[0m";
+    public static final String RESET = "\u001B[0m";
     public static final String NEGRO = "\u001B[30m";
     public static final String VERMELLO = "\u001B[31m";
     public static final String VERDE = "\u001B[32m";
@@ -68,12 +68,11 @@ public class EntradaSaida {
 
         short salida;
 
-
         do {
 
             if (input.hasNext() && !input.hasNextShort() ) {
                 error("short");
-                  input.nextLine();
+                input.nextLine();
             }
 
         } while (!input.hasNextShort());
@@ -88,7 +87,6 @@ public class EntradaSaida {
     public static byte lerByte() {
 
         byte salida;
-
 
         do {
 
@@ -139,27 +137,6 @@ public class EntradaSaida {
         } while (!input.hasNextDouble());
 
         salida = input.nextDouble();
-        input.nextLine();
-
-        return salida; 
-
-    }
-
-    public static boolean lerBoolean() {
-        
-	    
-        boolean salida;
-        
-        do {
-
-            if (input.hasNext() && !input.hasNextBoolean() ) {
-                error("boolean");
-                input.nextLine();
-            }
-
-        } while (!input.hasNextBoolean());
-
-        salida = input.nextBoolean();
         input.nextLine();
 
         return salida; 
@@ -238,7 +215,6 @@ public class EntradaSaida {
             if(op != 's' && op != 'n' ) {
 
                 correcto = false;
-
                 imprimirErro("Ten que ser 's' ou 'n'");
 
             }
@@ -253,18 +229,9 @@ public class EntradaSaida {
     }
     
     public static void imprimirCor(String mensaxe, String cor ) {
+
         System.out.println(stringColoreada(mensaxe, cor));
-    }
-
-    public static void imprimirLine(char c, int nVeces ) {
-
-        for(int i = 0; i < nVeces; i++ ) {
-
-            System.out.print(c);
-
-        }
-
-        System.out.println("");
+        
     }
     
     public static String stringColoreada(String mensaxe, String cor) {

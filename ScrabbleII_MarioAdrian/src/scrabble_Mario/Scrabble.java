@@ -1,4 +1,4 @@
-package scrabble_MarioAdrian;
+package scrabble_Mario;
 
 import java.util.Arrays;
 
@@ -33,49 +33,43 @@ public class Scrabble {
     
             car = Character.toLowerCase(palabra.charAt(i));
     
-            if(car == 'c') {
-    
-                if(i != palabra.length() - 1 && palabra.charAt(i + 1) == 'h') {
-    
-                    lista[listIndex++] = new Casilla("ch");
-                    i++;
-    
-                } else {
-    
+            switch (car) {
+                case 'c':
+                    if(i != palabra.length() - 1 && palabra.charAt(i + 1) == 'h') {
+                        
+                        lista[listIndex++] = new Casilla("ch");
+                        i++;
+                        
+                    } else {
+                        
+                        lista[listIndex++] = new Casilla(Character.toString(car));
+                        
+                    }   break;
+                case 'l':
+                    if(i != palabra.length() - 1 && palabra.charAt(i + 1) == 'l') {
+                        
+                        lista[listIndex++] = new Casilla("ll");
+                        i++;
+                        
+                    } else {
+                        
+                        lista[listIndex++] = new Casilla(Character.toString(car));
+                        
+                    }   break;
+                case 'r':
+                    if(i != palabra.length() - 1 && palabra.charAt(i + 1) == 'r') {
+                        
+                        lista[listIndex++] = new Casilla("rr");
+                        i++;
+                        
+                    } else {
+                        
+                        lista[listIndex++] = new Casilla(Character.toString(car));
+                        
+                    }   break;
+                default:
                     lista[listIndex++] = new Casilla(Character.toString(car));
-    
-                }
-    
-            } else if(car == 'l') {
-    
-                if(i != palabra.length() - 1 && palabra.charAt(i + 1) == 'l') {
-    
-                    lista[listIndex++] = new Casilla("ll");
-                    i++;
-    
-                } else {
-    
-                    lista[listIndex++] = new Casilla(Character.toString(car));
-    
-                }
-    
-            }else if(car == 'r') {
-    
-                if(i != palabra.length() - 1 && palabra.charAt(i + 1) == 'r') {
-    
-                    lista[listIndex++] = new Casilla("rr");
-                    i++;
-    
-                } else {
-    
-                    lista[listIndex++] = new Casilla(Character.toString(car));
-    
-                }
-    
-            }  else {
-    
-                lista[listIndex++] = new Casilla(Character.toString(car)); 
-    
+                    break;
             }
     
             i++; 

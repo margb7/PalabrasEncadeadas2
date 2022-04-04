@@ -1,4 +1,4 @@
-package scrabble_MarioAdrian;
+package scrabble_Mario;
 
 import java.util.ArrayList;
 
@@ -127,12 +127,13 @@ public class Xogador {
      * </ul>
     */
     public byte comodinsPrecisos(String palabra, byte fila, byte columna, boolean horizontal, Casilla[][] taboleiro) {
+        
         byte out = 0;
+        boolean atopado;
+        String str;
         Casilla[] palabraConvertida = Scrabble.convertirEnCasillas(palabra);
         ArrayList<String> copiaLetras = Utilidades.copiarArray(letras);
-        String str;
-        boolean atopado;
-
+        
         for(Casilla c : palabraConvertida ) {
 
             if(!copiaLetras.contains(c.getContido()) ) {
@@ -182,7 +183,7 @@ public class Xogador {
 
     @Override
     public String toString() {
-        return nome + " con " + puntos + " puntos"; 
+        return EntradaSaida.stringColoreada(nome, EntradaSaida.AZUL) + " con " + EntradaSaida.stringColoreada(Integer.toString(puntos), EntradaSaida.AZUL) + " puntos"; 
     }
 
 }
