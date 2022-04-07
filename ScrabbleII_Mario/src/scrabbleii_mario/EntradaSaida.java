@@ -1,4 +1,4 @@
-package scrabble_Mario;
+package scrabbleii_mario;
 
 import java.util.Scanner;
 
