@@ -67,9 +67,6 @@ public class ScrabbleII_Mario {
                 System.out.println("- Introduce o número de puntos para gañar [10, 500]:");
                 puntosVictoria = EntradaSaida.pedirRango(10, 500);
 
-                //p.setMaxRendicions((byte) numRendicions);
-                //p.setPuntosVictoria(puntosVictoria);
-
                 xogo = new Xogo(xogadores, numX2, numX3, numX4, numX2Pal, puntosVictoria, (byte) numRendicions, size);
 
             } else {

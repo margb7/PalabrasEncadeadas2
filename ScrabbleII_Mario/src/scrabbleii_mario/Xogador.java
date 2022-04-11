@@ -15,9 +15,11 @@ public class Xogador {
     private String nome;
     private int numPuntos;
     private ArrayList<String> letras;
+    private byte numPasos;
     
     public Xogador(String nome) {
         this.nome = nome;
+        numPasos = 0;
         letras = new ArrayList<>();
     }
 
@@ -33,9 +35,17 @@ public class Xogador {
         return numPuntos;
     }
 
+    public byte getNumPasos() {
+        return numPasos;
+    }
+
     public void setLetras(ArrayList<String> letras) {
         this.letras = letras;
     }
+
+    public void aumentarPasos() {
+        numPasos++;
+    } 
 
     public void aumentarPuntuacion(int puntos) {
         numPuntos += puntos;
@@ -71,5 +81,9 @@ public class Xogador {
         }
 
         return out;
+    }
+
+    public String toString() {
+        return nome + " con " + numPuntos + " puntos";
     }
 }

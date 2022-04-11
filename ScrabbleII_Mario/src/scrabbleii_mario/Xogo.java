@@ -5,7 +5,7 @@ import java.util.Random;
 
 /**
  *
- * @author nocelo
+ * @author a21mariogb
  */
 public class Xogo {
     
@@ -35,9 +35,9 @@ public class Xogo {
         this.xogadores = xogadores;
         numTurno = 0;
 
-
         this.puntosVictoria = puntosVictoria;
         this.maxRendicions = maxRendicions;
+
         NUM_FILAS = numFilas;
         MODO_NORMAL = false;
         iniciarTaboleiro(numX2, numX3, numX4, numX2Pal);
@@ -125,9 +125,9 @@ public class Xogo {
 
         }
 
-        do {
+        primerTurno = true;
 
-            imprimirInfoTurno();
+        do {
 
             xogadorTurno = seguinteXogador();
 
@@ -162,16 +162,88 @@ public class Xogo {
 
         boolean correcto;
         boolean paso = false;
-        String palabra;
+        boolean horizontal;
+        byte fila, columna;     // Onde colocar a palabra
+        String palabra; 
 
         do {
 
             correcto = true;
+            imprimirInfoTurno();
             
-            
+            System.out.println("Introduce unha palabra cunha lonxitude mínima de " + Scrabble.LON_MIN + " letras ou \"0\" para pasar de turno");
+
+            do {
+                
+                correcto = true;
+
+                palabra = EntradaSaida.lerString();
+
+                if(palabra.equals("0") ) {
+
+                    paso = true;
+
+                } else if(!Scrabble.lonxitudeCorrecta(palabra) ) {
+
+                    correcto = false;
+                    EntradaSaida.imprimirErro("Ten que ter como mínimo " + Scrabble.LON_MIN + " letras de lonxitude");
+
+                } 
+
+            } while(!correcto && !paso );
+
+            if(!paso ) {
+
+                if(!primerTurno ) {
+
+                    System.out.println("Introduce o número de fila onde colocar a palabra");
+                    fila = (byte) EntradaSaida.pedirRango(1, NUM_FILAS);
+
+                    System.out.println("Introduce o número de columna onde colocar a palabra");
+                    columna = (byte) EntradaSaida.pedirRango(1, NUM_FILAS);
+
+                    fila--;
+                    columna--;
+
+                } else {
+
+                    fila = (byte) (NUM_FILAS / 2);
+                    columna = (byte) (NUM_FILAS / 2);
+
+                    System.out.println("Ao ser o primer turno a palabra colocarase na fila " + (fila + 1) + " e columna " + (columna + 1));
+
+                }
+
+                horizontal = pedirHorizontal();
+
+            } else {    // Xogador pasou de turno 
+
+                xogadorTurno.aumentarPasos();
+
+            }
 
         } while(!correcto && !paso);
 
+    }
+
+    private boolean pedirHorizontal() {
+        char op;
+
+        System.out.println("Colocar horizontalmente ou verticalmente(H/V)");
+
+        do {
+
+            op = Character.toLowerCase(EntradaSaida.lerChar());
+
+            if (op != 'h' && op != 'v') {
+
+                EntradaSaida.imprimirErro("Ten que ser 'v' ou 'h'");
+
+            }
+
+        } while (op != 'h' && op != 'v');
+
+        return op == 'h';
     }
     
     private void mostrarResultados() {
@@ -234,7 +306,6 @@ public class Xogo {
         System.out.println("_______________________");
         System.out.println("  - Letras      : " + xogadores[numTurno].getLetras());
         System.out.println("_______________________");
-        System.out.println("Introduce unha palabra cun mínimo de " + Scrabble.LON_MIN + " letras ou \"0\" para rendirte");
 
     }
 
