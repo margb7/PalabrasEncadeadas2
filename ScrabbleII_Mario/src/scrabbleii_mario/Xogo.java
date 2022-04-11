@@ -22,7 +22,6 @@ public class Xogo {
     
     public Xogo(Xogador[] xogadores) {
         this.xogadores = xogadores;
-        numTurno = 0;
 
         NUM_FILAS = 21;
         MODO_NORMAL = true;
@@ -33,7 +32,6 @@ public class Xogo {
 
     public Xogo(Xogador[] xogadores, int numX2, int numX3, int numX4, int numX2Pal, int puntosVictoria, byte maxRendicions ,int numFilas ) {
         this.xogadores = xogadores;
-        numTurno = 0;
 
         this.puntosVictoria = puntosVictoria;
         this.maxRendicions = maxRendicions;
@@ -116,7 +114,7 @@ public class Xogo {
 
     public void xogarPartida() {
 
-        boolean rematada = true;
+        boolean rematada = false;
         Xogador xogadorTurno;
 
         for(Xogador x : xogadores ) {
@@ -124,13 +122,14 @@ public class Xogo {
             repartirLetras(x);
 
         }
-
+        
+        numTurno = 0;
         primerTurno = true;
 
         do {
 
             xogadorTurno = seguinteXogador();
-
+            repartirLetras(xogadorTurno);
             xogarTurno(xogadorTurno);
 
         } while(!rematada);
@@ -148,13 +147,13 @@ public class Xogo {
 
         out = xogadores[numTurno];
         numTurno++;
-
-        if(numTurno > xogadores.length ) {
+        
+        if(numTurno == xogadores.length ) {
 
             numTurno = 0;
 
         }
-
+        
         return out;
     }
     
@@ -163,13 +162,13 @@ public class Xogo {
         boolean correcto;
         boolean paso = false;
         boolean horizontal;
-        byte fila, columna;     // Onde colocar a palabra
+        byte fila, columna;     // Onde colocar a palabraIndex
         String palabra; 
 
         do {
 
             correcto = true;
-            imprimirInfoTurno();
+            imprimirInfoTurno(xogadorTurno);
             
             System.out.println("Introduce unha palabra cunha lonxitude mínima de " + Scrabble.LON_MIN + " letras ou \"0\" para pasar de turno");
 
@@ -219,8 +218,17 @@ public class Xogo {
                 if(podeColocarPalabra(palabra, fila, columna, horizontal, xogadorTurno) ) {
 
                     // Colocar palabra
+                    int puntos = colocarPalabra(Utilidades.convertirEnCasillas(palabra), fila, columna, horizontal, xogadorTurno);
 
-                    colocarPalabra(palabra, fila, columna, horizontal, xogadorTurno);
+                    System.out.println("");
+                    System.out.println(EntradaSaida.stringColoreada(xogadorTurno.getNome(), EntradaSaida.AZUL) + " obtivo " + puntos + " pola palabra " + EntradaSaida.stringColoreada(palabra, EntradaSaida.VERDE));
+                    xogadorTurno.aumentarPuntuacion(puntos);
+
+                    if(primerTurno ) {
+
+                        primerTurno = false;
+
+                    }
 
                 } else {
 
@@ -247,93 +255,198 @@ public class Xogo {
         
         out = comprobarForaBordes(convertida.length, horizontal, fila, columna);
 
-        if(out ) {
+        if(!primerTurno ) {
 
-            Casilla pezaTaboleiro;
+            if(out) {
 
-            for(int i = 0; i < convertida.length; i++ ) {
-
-                if(horizontal ) {
-
-                    pezaTaboleiro = taboleiro[fila + i][columna];
-
-                } else {
-
-                    pezaTaboleiro = taboleiro[fila][columna + i];
-
-                }
-
-                if(pezaTaboleiro.getContido().equals(convertida[i].getContido()) ) {
-
-                    numCoincidencias++;
-
-                } else {
-
-                    if(letrasXogador.contains(convertida[i].getContido()) ) {
-
-                        letrasXogador.remove(convertida[i].getContido());
+                Casilla pezaTaboleiro;
+    
+                for(int i = 0; i < convertida.length; i++ ) {
+    
+                    if(horizontal ) {
+    
+                        pezaTaboleiro = taboleiro[fila][columna + i];
     
                     } else {
-
-                        if(letrasXogador.contains("*") ) {
-
-                            if(!usouComodin ) {
-
-                                letrasXogador.remove("*");
-                                usouComodin = true;
-
+    
+                        pezaTaboleiro = taboleiro[fila + i][columna];
+    
+                    }
+    
+                    if(pezaTaboleiro.getContido().equals(convertida[i].getContido()) ) {
+    
+                        numCoincidencias++;
+    
+                    } else {
+    
+                        if(letrasXogador.contains(convertida[i].getContido()) ) {
+    
+                            letrasXogador.remove(convertida[i].getContido());
+        
+                        } else {
+    
+                            if(letrasXogador.contains("*") ) {
+    
+                                if(!usouComodin ) {
+    
+                                    letrasXogador.remove("*");
+                                    usouComodin = true;
+    
+                                } else {
+    
+                                    out = false;
+    
+                                }
+        
                             } else {
-
+    
                                 out = false;
-
+    
                             }
     
-                        } else {
-
-                            out = false;
-
                         }
-
+    
                     }
-
+    
                 }
-
-            }
-
-            if(out ) {
-
-                if(numCoincidencias == 0 && !primerTurno) {
-
-                    EntradaSaida.imprimirErro("Non encaixa con ningunha letra do taboleiro");
-                    out = false;
-        
-                } else if(numCoincidencias == convertida.length ) {
-        
-                    EntradaSaida.imprimirErro("Non pode coincidir exactamente con letras xa colocadadas no taboleiro");
-                    out = false;
-        
+    
+                if(out ) {
+    
+                    if(numCoincidencias == 0 && !primerTurno) {
+    
+                        EntradaSaida.imprimirErro("Non encaixa con ningunha letra do taboleiro");
+                        out = false;
+            
+                    } else if(numCoincidencias == convertida.length ) {
+            
+                        EntradaSaida.imprimirErro("Non pode coincidir exactamente con letras xa colocadadas no taboleiro");
+                        out = false;
+            
+                    }
+    
+                } else {
+    
+                    EntradaSaida.imprimirErro("Non tes as letras ou comodíns suficientes para colocar a palabra");
+    
                 }
-
+    
             } else {
-
-                EntradaSaida.imprimirErro("Non tes as letras ou comodíns suficientes para colocar a palabra");
-
+    
+                EntradaSaida.imprimirErro("A palabra vaise fora dos bordes");
+    
             }
-
-        } else {
-
-            EntradaSaida.imprimirErro("A palabra vaise fora dos bordes");
 
         }
 
         return out;
     }
 
-    private int colocarPalabra(String palabra, byte fila, byte columna, boolean horizontal, Xogador xog ) {
-        int out = 0;
+    private int colocarPalabra(Casilla[] palabra, byte fila, byte columna, boolean horizontal, Xogador xog ) {
+        int puntos = 0;
+        int coincidenciasParaScrabble = 0;
+        boolean palabraDobre = false;
+        boolean usouComodin;
+        Casilla casTaboleiro;
+        String[] resultados = {"LETRAS:  ", "MULT:    ", "PUNTOS:  "};
 
+        for(int i = 0; i < palabra.length; i++ ) {
 
-        return out;
+            usouComodin = false;       // Para non puntuar comodins
+
+            if(horizontal ) {
+
+                casTaboleiro = taboleiro[fila][columna + i];
+
+            } else {
+
+                casTaboleiro = taboleiro[fila + i][columna];
+
+            }
+
+            if(casTaboleiro.getTipo() == 4 ) {
+
+                palabraDobre = true;
+
+            }
+
+            if(!palabra[i].getContido().equals(casTaboleiro.getContido()) ) {
+
+                int index = xog.getLetras().indexOf(palabra[i].getContido());
+
+                if(index != -1) {
+
+                    xog.getLetras().remove(index);
+                    coincidenciasParaScrabble++;
+                    resultados[0] += palabra[i].valorMostra() + "  ";
+
+                } else {
+
+                    usouComodin = true;
+                    xog.getLetras().remove("*");
+                    resultados[0] += " *  ";
+
+                }
+
+            }
+            
+            if(!usouComodin ) {
+
+                puntos += Scrabble.puntuacionCasilla(palabra[i]) * casTaboleiro.getMultiplicador();
+                resultados[1] += " " + casTaboleiro.getMultiplicador() + "  ";
+
+                if(puntos < 10 ) {
+
+                    resultados[2] += " ";
+
+                }
+
+                resultados[2] += puntos + "  ";
+
+            } else {
+
+                resultados[1] += "    ";
+                resultados[2] += " 0  ";
+
+            }
+
+            if(horizontal ) {
+
+                taboleiro[fila][columna + i] = palabra[i];
+
+            } else {
+
+                taboleiro[fila + i][columna] = palabra[i];
+
+            }
+
+        }
+
+        if(palabraDobre ) {
+
+            puntos *= 2;
+
+        }
+
+        for(String s : resultados ) {
+
+            System.out.println(s);
+
+        }
+
+        if(palabraDobre ) {
+
+            System.out.println("- Ademais dun multiplicador de x2 veces o valor da palabra");
+
+        }
+
+        if(coincidenciasParaScrabble == 7 && coincidenciasParaScrabble == palabra.length) {
+
+            System.out.println("- SCRABBLE ( +50 puntos)");
+            puntos += 50;
+
+        }
+
+        return puntos;
     }
 
     private boolean comprobarForaBordes(int lonxitude, boolean horizontal, byte fila, byte columna) {
@@ -342,7 +455,7 @@ public class Xogo {
 
         if (horizontal) {
 
-            if ((columna + lonxitude) >= NUM_FILAS) {
+            if ((columna + lonxitude) > NUM_FILAS) {
 
                 out = false;
 
@@ -350,7 +463,7 @@ public class Xogo {
 
         } else {
 
-            if ((fila + lonxitude) >= NUM_FILAS) {
+            if ((fila + lonxitude) > NUM_FILAS) {
 
                 out = false;
 
@@ -420,7 +533,7 @@ public class Xogo {
      * 
      * @param xogador o xogador do turno.
      */
-    private void imprimirInfoTurno() {
+    private void imprimirInfoTurno(Xogador xogTurno) {
 
         System.out.println("Puntuacións: ");
 
@@ -437,9 +550,9 @@ public class Xogo {
         imprimirTaboleiro();
 
         System.out.println("_______________________");
-        System.out.println("## Turno de " + EntradaSaida.stringColoreada(xogadores[numTurno].getNome(), EntradaSaida.AZUL) + " ##");
+        System.out.println("## Turno de " + EntradaSaida.stringColoreada(xogTurno.getNome(), EntradaSaida.AZUL) + " ##");
         System.out.println("_______________________");
-        System.out.println("  - Letras      : " + xogadores[numTurno].getLetras());
+        System.out.println("  - Letras      : " + xogTurno.getLetras());
         System.out.println("_______________________");
 
     }

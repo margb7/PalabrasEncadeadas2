@@ -25,7 +25,7 @@ public class Casilla {
 
         if(tipo == 4) {
 
-            out = 2;
+            out = 1;
 
         } else {
 
@@ -34,6 +34,10 @@ public class Casilla {
         }
 
         return out;
+    }
+
+    public byte getTipo() {
+        return tipo;
     }
 
     public boolean eEspecial() {
