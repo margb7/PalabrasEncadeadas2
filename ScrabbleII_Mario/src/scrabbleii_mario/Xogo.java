@@ -216,6 +216,18 @@ public class Xogo {
 
                 horizontal = pedirHorizontal();
 
+                if(podeColocarPalabra(palabra, fila, columna, horizontal, xogadorTurno) ) {
+
+                    // Colocar palabra
+
+                    colocarPalabra(palabra, fila, columna, horizontal, xogadorTurno);
+
+                } else {
+
+                    correcto = false;
+
+                }
+
             } else {    // Xogador pasou de turno 
 
                 xogadorTurno.aumentarPasos();
@@ -224,6 +236,129 @@ public class Xogo {
 
         } while(!correcto && !paso);
 
+    }
+
+    private boolean podeColocarPalabra(String palabra, byte fila, byte columna, boolean horizontal, Xogador xog ) {
+        boolean out = true;
+        boolean usouComodin = false;
+        byte numCoincidencias = 0;
+        Casilla[] convertida = Utilidades.convertirEnCasillas(palabra);
+        ArrayList<String> letrasXogador = Utilidades.copiarArray(xog.getLetras());
+        
+        out = comprobarForaBordes(convertida.length, horizontal, fila, columna);
+
+        if(out ) {
+
+            Casilla pezaTaboleiro;
+
+            for(int i = 0; i < convertida.length; i++ ) {
+
+                if(horizontal ) {
+
+                    pezaTaboleiro = taboleiro[fila + i][columna];
+
+                } else {
+
+                    pezaTaboleiro = taboleiro[fila][columna + i];
+
+                }
+
+                if(pezaTaboleiro.getContido().equals(convertida[i].getContido()) ) {
+
+                    numCoincidencias++;
+
+                } else {
+
+                    if(letrasXogador.contains(convertida[i].getContido()) ) {
+
+                        letrasXogador.remove(convertida[i].getContido());
+    
+                    } else {
+
+                        if(letrasXogador.contains("*") ) {
+
+                            if(!usouComodin ) {
+
+                                letrasXogador.remove("*");
+                                usouComodin = true;
+
+                            } else {
+
+                                out = false;
+
+                            }
+    
+                        } else {
+
+                            out = false;
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            if(out ) {
+
+                if(numCoincidencias == 0 && !primerTurno) {
+
+                    EntradaSaida.imprimirErro("Non encaixa con ningunha letra do taboleiro");
+                    out = false;
+        
+                } else if(numCoincidencias == convertida.length ) {
+        
+                    EntradaSaida.imprimirErro("Non pode coincidir exactamente con letras xa colocadadas no taboleiro");
+                    out = false;
+        
+                }
+
+            } else {
+
+                EntradaSaida.imprimirErro("Non tes as letras ou comodíns suficientes para colocar a palabra");
+
+            }
+
+        } else {
+
+            EntradaSaida.imprimirErro("A palabra vaise fora dos bordes");
+
+        }
+
+        return out;
+    }
+
+    private int colocarPalabra(String palabra, byte fila, byte columna, boolean horizontal, Xogador xog ) {
+        int out = 0;
+
+
+        return out;
+    }
+
+    private boolean comprobarForaBordes(int lonxitude, boolean horizontal, byte fila, byte columna) {
+
+        boolean out = true;
+
+        if (horizontal) {
+
+            if ((columna + lonxitude) >= NUM_FILAS) {
+
+                out = false;
+
+            }
+
+        } else {
+
+            if ((fila + lonxitude) >= NUM_FILAS) {
+
+                out = false;
+
+            }
+
+        }
+
+        return out;
     }
 
     private boolean pedirHorizontal() {
@@ -287,7 +422,7 @@ public class Xogo {
      */
     private void imprimirInfoTurno() {
 
-        System.out.print("Puntuacións: ");
+        System.out.println("Puntuacións: ");
 
         for(int i = 0; i < xogadores.length; i++ ) {
 

@@ -51,39 +51,7 @@ public class Xogador {
         numPuntos += puntos;
     }
 
-    public boolean podeColocarPalabra(String palabra) {
-        boolean out = true;
-        Casilla[] lista = Utilidades.convertirEnCasillas(palabra);
-        boolean usouComodin = false;
-        ArrayList<String> copia = Utilidades.copiarArray(letras);
-
-        for(int i = 0; i < lista.length && out; i++ ) {
-
-            if(!letras.contains(lista[i].getContido()) ) {
-
-                if(!usouComodin && letras.contains("*") ) {
-
-                    usouComodin = true;
-                    copia.remove("*");
-
-                } else {
-
-                    out = false;
-
-                }
-
-            } else {
-
-                copia.remove(lista[i].getContido());
-
-            }
-
-        }
-
-        return out;
-    }
-
     public String toString() {
-        return nome + " con " + numPuntos + " puntos";
+        return EntradaSaida.stringColoreada(nome, EntradaSaida.AZUL) + " con " + numPuntos + " puntos";
     }
 }
