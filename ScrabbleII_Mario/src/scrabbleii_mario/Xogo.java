@@ -31,6 +31,19 @@ public class Xogo {
 
     }
 
+    public Xogo(Xogador[] xogadores, int numX2, int numX3, int numX4, int numX2Pal, int puntosVictoria, byte maxRendicions ,int numFilas ) {
+        this.xogadores = xogadores;
+        numTurno = 0;
+
+
+        this.puntosVictoria = puntosVictoria;
+        this.maxRendicions = maxRendicions;
+        NUM_FILAS = numFilas;
+        MODO_NORMAL = false;
+        iniciarTaboleiro(numX2, numX3, numX4, numX2Pal);
+        engadirLetras();
+    }
+
     private void iniciarTaboleiro(int numX2, int numX3, int numX4, int numX2Pal) {
     
         taboleiro = new Casilla[NUM_FILAS][NUM_FILAS];
@@ -128,7 +141,6 @@ public class Xogo {
     
     /**
      * Método que devolve o seguinte xogador do turno.
-     * 
      * @return o xogador.
      */
     private Xogador seguinteXogador() {
