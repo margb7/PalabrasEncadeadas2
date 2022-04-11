@@ -25,6 +25,7 @@ public class Xogo {
 
         NUM_FILAS = 21;
         MODO_NORMAL = true;
+        maxRendicions = 3;
         iniciarTaboleiro(5, 4, 3, 2);
         engadirLetras();
 
@@ -132,6 +133,20 @@ public class Xogo {
             repartirLetras(xogadorTurno);
             xogarTurno(xogadorTurno);
 
+            if(xogadorTurno.getNumPasos() > maxRendicions ) {
+
+                xogadorTurno.setEstado(false);
+
+            }
+
+            if(tablaLetras.size() == 0 && xogadorTurno.getLetras().size() == 0 ) {
+
+                xogadorTurno.setEstado(false);
+
+            }
+
+            rematada = comprobarFinal();
+
         } while(!rematada);
 
         mostrarResultados();
@@ -145,14 +160,18 @@ public class Xogo {
     private Xogador seguinteXogador() {
         Xogador out;
 
-        out = xogadores[numTurno];
-        numTurno++;
-        
-        if(numTurno == xogadores.length ) {
+        do {
 
-            numTurno = 0;
+            out = xogadores[numTurno];
+            numTurno++;
 
-        }
+            if(numTurno == xogadores.length ) {
+
+                numTurno = 0;
+    
+            }
+
+        }while(!out.getEstado());
         
         return out;
     }
@@ -261,7 +280,7 @@ public class Xogo {
 
                 Casilla pezaTaboleiro;
     
-                for(int i = 0; i < convertida.length; i++ ) {
+                for(int i = 0; i < convertida.length && out; i++ ) {
     
                     if(horizontal ) {
     
@@ -447,6 +466,60 @@ public class Xogo {
         }
 
         return puntos;
+    }
+
+    private boolean comprobarFinal() {
+        boolean out = false;
+        int numXogadoresPodenXogar = 0;
+        int numXogadoresSenLetras = 0;
+
+        for(Xogador xog : xogadores ) {
+
+            if(xog.getEstado() ) {
+
+                numXogadoresPodenXogar++;
+
+            } else {
+
+                if(xog.getNumPasos() < maxRendicions ) {    
+
+                    numXogadoresSenLetras++;
+
+                }
+
+            }
+
+        }
+
+        if(numXogadoresPodenXogar == 0 ) {
+
+            out = true;
+
+        } else if (numXogadoresPodenXogar == 1) {
+
+            if(numXogadoresSenLetras == 0 ) {
+
+                out = true;
+
+            }
+
+        }
+
+        if(!MODO_NORMAL ) {
+
+            for(Xogador x : xogadores ) {
+
+                if(x.getPuntos() >= puntosVictoria ) {
+
+                    out = true;
+
+                }
+
+            }
+
+        }
+
+        return out;
     }
 
     private boolean comprobarForaBordes(int lonxitude, boolean horizontal, byte fila, byte columna) {

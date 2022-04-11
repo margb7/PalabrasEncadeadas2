@@ -16,9 +16,11 @@ public class Xogador {
     private int numPuntos;
     private ArrayList<String> letras;
     private byte numPasos;
+    private boolean activo;
     
     public Xogador(String nome) {
         this.nome = nome;
+        activo = true;
         numPasos = 0;
         letras = new ArrayList<>();
     }
@@ -37,6 +39,14 @@ public class Xogador {
 
     public byte getNumPasos() {
         return numPasos;
+    }
+
+    public boolean getEstado() {
+        return activo;
+    }
+
+    public void setEstado(boolean activo) {
+        this.activo = activo;
     }
 
     public void setLetras(ArrayList<String> letras) {
