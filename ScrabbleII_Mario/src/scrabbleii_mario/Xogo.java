@@ -315,6 +315,7 @@ public class Xogo {
     private boolean podeColocarPalabra(String palabra, byte fila, byte columna, boolean horizontal, Xogador xog ) {
         boolean out = true;
         boolean usouComodin = false;
+        boolean coincideLetraDistinta = false;
         byte numCoincidencias = 0;
         Casilla[] convertida = Utilidades.convertirEnCasillas(palabra);
         ArrayList<String> letrasXogador = Utilidades.copiarArray(xog.getLetras());
@@ -340,6 +341,11 @@ public class Xogo {
                 if(pezaTaboleiro.getContido().equals(convertida[i].getContido()) ) {
 
                     numCoincidencias++;
+
+                } else if(!pezaTaboleiro.eEspecial() && !pezaTaboleiro.getContido().equals("") ) {   // Para cando hai unha letra posta e non coincide
+                
+                    out = false;
+                    coincideLetraDistinta = true;   
 
                 } else {
 
@@ -390,7 +396,15 @@ public class Xogo {
 
             } else {
 
-                EntradaSaida.imprimirErro("Non tes as letras ou comodíns suficientes para colocar a palabra");
+                if(coincideLetraDistinta ) {
+
+                    EntradaSaida.imprimirErro("Unha das letras da palabra non coincide cunha letra xa colocada no taboleiro");
+
+                } else {
+
+                    EntradaSaida.imprimirErro("Faltan letras ou comodins para poder colocar a palabra");
+
+                }
 
             }
 
