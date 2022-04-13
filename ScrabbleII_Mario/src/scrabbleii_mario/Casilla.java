@@ -1,15 +1,26 @@
 package scrabbleii_mario;
 
+/**
+ * Clase que contén a información de cada unha das casillas do taboleiro
+ */
 public class Casilla {
     
     private String contido;
     private byte tipo;
 
+    /**
+     * Constructor para unha casilla dado un contido. Pode ser unha casilla vacía ou unha casilla con contido.
+     * @param contido o contido da casilla.
+     */
     public Casilla(String contido ) {
         this.contido = contido;
         tipo = 0;
     }
 
+    /**
+     * Constructor para unha casilla para casillas especiais
+     * @param tipo
+     */
     public Casilla(byte tipo ) {
         contido = "";
         this.tipo = tipo;

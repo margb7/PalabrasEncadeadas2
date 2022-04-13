@@ -112,7 +112,6 @@ public class Xogo {
 
     }
 
-
     public void xogarPartida() {
 
         boolean rematada = false;
@@ -505,7 +504,7 @@ public class Xogo {
 
         }
 
-        if(!MODO_NORMAL ) {
+        if(!out && !MODO_NORMAL ) {
 
             for(Xogador x : xogadores ) {
 
@@ -569,8 +568,77 @@ public class Xogo {
     
     private void mostrarResultados() {
 
-        System.out.println("RESULTADOS");
+        int numXogadoresPodenXogar = 0;
+        int numXogadoresSenLetras = 0;
+        int offset = 1;     // Num de xogadores empatados    
+
+        System.out.println("\n==PARTIDA REMATADA==\nRESULTADOS\n");
+
+        Utilidades.ordenarPorPuntos(xogadores);
+
+        for(Xogador xog : xogadores ) {
+
+            if(xog.getEstado() ) {
+
+                numXogadoresPodenXogar++;
+
+            } else {
+
+                if(xog.getNumPasos() < maxRendicions ) {    
+
+                    numXogadoresSenLetras++;
+
+                }
+
+            }
+
+        }
+
+        if(numXogadoresSenLetras == 0 && numXogadoresPodenXogar == 1 ) {    // Rendíronse todos menos 1 
+
+            System.out.println("Gañou " + xogadores[xogadores.length - 1]);
+
+        } else if(numXogadoresSenLetras == xogadores.length ) {
+            
+            if(xogadores[xogadores.length - 1].getPuntos() != xogadores[xogadores.length - 2].getPuntos() ) {
+
+                System.out.println("Gañou " + xogadores[xogadores.length]);
+
+            } else {
+
+                int puntuacion = xogadores[xogadores.length - 1].getPuntos();
+                boolean salir = false;
+
+                for(int i = xogadores.length - 2 ; i >= 0 && !salir; i-- ) {
+
+                    if(xogadores[i].getPuntos() == puntuacion ) {
+
+                        offset++;
+
+                    } else {
+
+                        salir = true;
+
+                    }
+
+                }
+
+            }
+            
+        } else if(!MODO_NORMAL ) {
+
+            System.out.println("Gañou " + xogadores[xogadores.length - 1]);
+
+        }
         
+        System.out.println("Resultados do resto: ");
+
+        for(int i = xogadores.length - 1 - offset; i >= 0 ; i-- ) {
+
+            System.out.println(" - " + xogadores[i]);
+
+        }
+
     }
 
     private void repartirLetras(Xogador x ) {
@@ -624,7 +692,6 @@ public class Xogo {
 
         System.out.println("_______________________");
         System.out.println("## Turno de " + EntradaSaida.stringColoreada(xogTurno.getNome(), EntradaSaida.AZUL) + " ##");
-        System.out.println("_______________________");
         System.out.println("  - Letras      : " + xogTurno.getLetras());
         System.out.println("_______________________");
 
