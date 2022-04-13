@@ -4,11 +4,10 @@ import java.util.Scanner;
 
 /**
  * Clase que xestiona a entrada e saída pola terminal.
- * @author a21mariogb
  */
 public class EntradaSaida {
     
-    private static final Scanner input = new Scanner(System.in, "UTF-8");        // ISO-8859-1
+    private static final Scanner input = new Scanner(System.in, "UTF-8");        // ou ISO-8859-1 se da problemas
     
     public static final String RESET = "\u001B[0m";
     public static final String NEGRO = "\u001B[30m";

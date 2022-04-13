@@ -3,6 +3,9 @@ package scrabbleii_mario;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Clase con métodos estáticos para axudar con tarefas diversas e repetitivas no programa.
+ */
 public class Utilidades {
     
     /**

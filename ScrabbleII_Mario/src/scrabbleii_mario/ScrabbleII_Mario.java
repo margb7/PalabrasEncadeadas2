@@ -1,17 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package scrabbleii_mario;
 
 /**
- *
- * @author mariogb
- */
+ * Clase main do Scrabble.
+ * As melloras incluídas son:
+ * <ul>
+ *      <li>Pódese configurar o número de cada casilla especial que aparece no taboleiro</li>
+ *      <li>Pódese configurar o tamaño do taboleiro</li>
+ *      <li>Os comodíns colócanse automáticamente no caso de precisar ser usados</li>
+ *      <li>As partidas poden conter ata 4 xogadores</li>
+ *      <li>Pódese configurar un número de puntos para gañar. O primer xogador en chegar a eses puntos será o gañador.</li>
+ * </ul>
+ * Exceptuando a mellora para xogar ata 4 xogadores, o resto de melloras son so accesibles ao comezo da 
+ * partida cando se pregunta se se quere configurar a partida. 
+*/
 public class ScrabbleII_Mario {
 
     /**
-     * @param args the command line arguments
+     * Main do programa
+     * @param args os argumentos por liña de comandos.
      */
     public static void main(String[] args) {
         
@@ -85,6 +91,11 @@ public class ScrabbleII_Mario {
 
     }
 
+    /**
+     * Método para pedir un xogador.
+     * @param num o número de xogador que representa. Este valor non afecta ao xogador e só é un valor de mostra.
+     * @return un obxecto xogador.
+     */
     private static Xogador pedirXogador(int num) {
         String str;
 

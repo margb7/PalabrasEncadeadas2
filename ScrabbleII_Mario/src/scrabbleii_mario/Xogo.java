@@ -3,9 +3,9 @@ package scrabbleii_mario;
 import java.util.ArrayList;
 import java.util.Random;
 
+
 /**
- *
- * @author a21mariogb
+ * Clase que xestiona unha partida.
  */
 public class Xogo {
     
@@ -20,6 +20,11 @@ public class Xogo {
     private int puntosVictoria;
     private boolean primerTurno;
     
+    /**
+     * Constructor para crear unha partida a partir dos xogadores. Este constructor establece os valores por defecto
+     * do modo normal.
+     * @param xogadores os xogadores que interveñen na partida.
+     */
     public Xogo(Xogador[] xogadores) {
         this.xogadores = xogadores;
 
@@ -31,6 +36,17 @@ public class Xogo {
 
     }
 
+    /**
+     * Constructor para configurar a partida.
+     * @param xogadores os xogadores da partida.
+     * @param numX2 o numero de casillas X2 no taboleiro.
+     * @param numX3 o numero de casillas X3 no taboleiro.
+     * @param numX4 o numero de casillas X4 no taboleiro.
+     * @param numX2Pal o numero de casillas de doble valor da palabra no taboleiro.
+     * @param puntosVictoria o número de puntos para gañar.
+     * @param maxRendicions o número máximo de veces que se pode pasar.
+     * @param numFilas o número de filas do taboleiro.
+     */
     public Xogo(Xogador[] xogadores, int numX2, int numX3, int numX4, int numX2Pal, int puntosVictoria, byte maxRendicions ,int numFilas ) {
         this.xogadores = xogadores;
 
@@ -43,6 +59,13 @@ public class Xogo {
         engadirLetras();
     }
 
+    /**
+     * Método para preparar o taboleiro para xogar a partida.
+     * @param numX2 o numero de casillas X2 no taboleiro.
+     * @param numX3 o numero de casillas X3 no taboleiro.
+     * @param numX4 o numero de casillas X4 no taboleiro.
+     * @param numX2Pal o numero de casillas de doble valor de palabra no taboleiro.
+     */
     private void iniciarTaboleiro(int numX2, int numX3, int numX4, int numX2Pal) {
     
         taboleiro = new Casilla[NUM_FILAS][NUM_FILAS];
@@ -63,6 +86,11 @@ public class Xogo {
         colocarCasillaEspecial((byte)4, numX2Pal);
     }
 
+    /**
+     * Método para colocar casillas especiais en posicións aleatorias do taboleiro.
+     * @param tipo o tipo de casilla especial.
+     * @param cantidade o número de casillas a colocar.
+     */
     private void colocarCasillaEspecial(byte tipo, int cantidade ) {
         Random rnd = new Random();
         int px, py;
@@ -112,6 +140,9 @@ public class Xogo {
 
     }
 
+    /**
+     * Método que se encarga de xestionar unha partida enteira.
+     */
     public void xogarPartida() {
 
         boolean rematada = false;
@@ -175,12 +206,16 @@ public class Xogo {
         return out;
     }
     
+    /**
+     * Método que xestiona o que pasa durante un turno.
+     * @param xogadorTurno o xogador do turno.
+     */
     private void xogarTurno(Xogador xogadorTurno) {
 
         boolean correcto;
         boolean paso = false;
         boolean horizontal;
-        byte fila, columna;     // Onde colocar a palabraIndex
+        byte fila, columna;     // Onde colocar a palabra
         String palabra; 
 
         do {
@@ -264,6 +299,17 @@ public class Xogo {
 
     }
 
+    /**
+     * Método que comproba se unha palabra pode colocarse no taboleiro. Para que unha palabra se poda colocar
+     * ten que entrar dentro dos límites do taboleiro e ten que coincidir cunha das letras xa colocadas polo 
+     * menos unha vez e como máximo a lonxitude da palabra -1.
+     * @param palabra a palabra para comprobar.
+     * @param fila a fila onde se quere colocar.
+     * @param columna a columna onde se quere colocar.
+     * @param horizontal se se coloca horizontal ou verticalmente.
+     * @param xog o xogador que vai colocar a palabra.
+     * @return true se se pode colocar.
+     */
     private boolean podeColocarPalabra(String palabra, byte fila, byte columna, boolean horizontal, Xogador xog ) {
         boolean out = true;
         boolean usouComodin = false;
@@ -359,6 +405,15 @@ public class Xogo {
         return out;
     }
 
+    /**
+     * Método para colocar unha palabra no taboleiro. Devolve o número de puntos obtidos ao colocar a palabra. Tamén lle retira ao xogador as letras que usa.
+     * @param palabra a palabra a colocar
+     * @param fila a fila na que colocar a palabra
+     * @param columna a columna na que colocar a palabra
+     * @param horizontal se é true colocase a palabra horizontalmente.
+     * @param xog o xogador que quere colocar a palabra.
+     * @return o número de puntos obtidos.
+     */
     private int colocarPalabra(Casilla[] palabra, byte fila, byte columna, boolean horizontal, Xogador xog ) {
         int puntos = 0;
         int coincidenciasParaScrabble = 0;
@@ -467,6 +522,10 @@ public class Xogo {
         return puntos;
     }
 
+    /**
+     * Método para comprobar se rematou a partida.
+     * @return true se rematou.
+     */
     private boolean comprobarFinal() {
         boolean out = false;
         int numXogadoresPodenXogar = 0;
@@ -521,6 +580,15 @@ public class Xogo {
         return out;
     }
 
+    /**
+     * Método que comproba se ao colocar unha palarba se sae dos límites do taboleiro.
+     * @param lonxitude a lonxitude da palabra para comprobar. Importante que sexa a lonxitude da palabra
+     * xa convertida en casillas e non a lonxitude da palabra como cadea.
+     * @param horizontal se se coloca horizontalmente.
+     * @param fila a fila onde se coloca.
+     * @param columna a columna onde se coloca.
+     * @return true se non se sae dos límites.
+     */
     private boolean comprobarForaBordes(int lonxitude, boolean horizontal, byte fila, byte columna) {
 
         boolean out = true;
@@ -546,6 +614,10 @@ public class Xogo {
         return out;
     }
 
+    /**
+     * Método para pedir se o xogador quere colocar a palabra en vertical ou horizontal.
+     * @return true se a quere colocar horizontalmente.
+     */
     private boolean pedirHorizontal() {
         char op;
 
@@ -566,6 +638,9 @@ public class Xogo {
         return op == 'h';
     }
     
+    /**
+     * Método para amosar o resultado da partida ao rematar.
+     */
     private void mostrarResultados() {
 
         int numXogadoresPodenXogar = 0;
@@ -641,12 +716,16 @@ public class Xogo {
 
     }
 
-    private void repartirLetras(Xogador x ) {
+    /**
+     * Método para repartir letras a un xogador. Se non quedan letras non repartirá.
+     * @param xog o xogador para darlle as letras ata 7 ou as que queden dispoñibles.
+     */
+    private void repartirLetras(Xogador xog ) {
 
-        if (x.getLetras().size() < 7) {
+        if (xog.getLetras().size() < 7) {
 
             Random rnd = new Random();
-            int letrasFaltan = 7 - x.getLetras().size();
+            int letrasFaltan = 7 - xog.getLetras().size();
             int num;
 
             if (letrasFaltan > tablaLetras.size()) { // Se non quedan suficientes letras para repartir
@@ -659,7 +738,7 @@ public class Xogo {
                                                      // da lista de letras dispoñibles
                 num = rnd.nextInt(tablaLetras.size());
 
-                x.getLetras().add(tablaLetras.get(num).toLowerCase());
+                xog.getLetras().add(tablaLetras.get(num).toLowerCase());
                 tablaLetras.remove(num);
 
             }
@@ -670,8 +749,7 @@ public class Xogo {
 
     /**
      * Método que se imprime antes de pedir unha palabra para amosar información do
-     * turno e o xogador
-     * 
+     * turno e do xogador.
      * @param xogador o xogador do turno.
      */
     private void imprimirInfoTurno(Xogador xogTurno) {

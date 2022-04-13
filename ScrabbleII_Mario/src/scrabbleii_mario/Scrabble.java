@@ -1,26 +1,30 @@
 package scrabbleii_mario;
 
 /**
- *
- * @author 
+ * Clase para xestionar as regras do Scrabble e algunhas utilidades para as partidas
  */
 public class Scrabble {
     
     public static final int LON_MIN = 3;
     
+    /**
+     * Método para comprobar que a palabra cumpla coa lonxitude mínima dunha palabra.
+     * @param palabra a palabra para comprobar.
+     * @return true se a palabra é correcta.
+     */
     public static boolean lonxitudeCorrecta(String palabra) {
         return (palabra.length() >= LON_MIN);
     }
 
-   /**
-     * Método para obter a posición dunha casilla
-     * @param cont
-     * @return
+    /**
+     * Método para obter a posición dunha casilla.
+     * @param cas a casilla para obter a puntuación.
+     * @return a puntuación da casilla ou 0 se non se atopa na táboa de letras posibles.
      */
-    public static int puntuacionCasilla(Casilla cont) {
+    public static int puntuacionCasilla(Casilla cas) {
         int puntos = 0;
 
-        switch (cont.getContido().toLowerCase()){
+        switch (cas.getContido().toLowerCase()){
             case "a":
             case "e":
             case "i":
