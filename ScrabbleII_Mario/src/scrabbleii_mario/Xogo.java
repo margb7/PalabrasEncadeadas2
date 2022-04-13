@@ -275,6 +275,8 @@ public class Xogo {
 
                     System.out.println("");
                     System.out.println(EntradaSaida.stringColoreada(xogadorTurno.getNome(), EntradaSaida.AZUL) + " obtivo " + puntos + " pola palabra " + EntradaSaida.stringColoreada(palabra, EntradaSaida.VERDE));
+                    System.out.println("");
+                    
                     xogadorTurno.aumentarPuntuacion(puntos);
 
                     if(primerTurno ) {
@@ -319,88 +321,85 @@ public class Xogo {
         
         out = comprobarForaBordes(convertida.length, horizontal, fila, columna);
 
-        if(!primerTurno ) {
+        if(out) {
 
-            if(out) {
+            Casilla pezaTaboleiro;
 
-                Casilla pezaTaboleiro;
-    
-                for(int i = 0; i < convertida.length && out; i++ ) {
-    
-                    if(horizontal ) {
-    
-                        pezaTaboleiro = taboleiro[fila][columna + i];
+            for(int i = 0; i < convertida.length && out; i++ ) {
+
+                if(horizontal ) {
+
+                    pezaTaboleiro = taboleiro[fila][columna + i];
+
+                } else {
+
+                    pezaTaboleiro = taboleiro[fila + i][columna];
+
+                }
+
+                if(pezaTaboleiro.getContido().equals(convertida[i].getContido()) ) {
+
+                    numCoincidencias++;
+
+                } else {
+
+                    if(letrasXogador.contains(convertida[i].getContido()) ) {
+
+                        letrasXogador.remove(convertida[i].getContido());
     
                     } else {
-    
-                        pezaTaboleiro = taboleiro[fila + i][columna];
-    
-                    }
-    
-                    if(pezaTaboleiro.getContido().equals(convertida[i].getContido()) ) {
-    
-                        numCoincidencias++;
-    
-                    } else {
-    
-                        if(letrasXogador.contains(convertida[i].getContido()) ) {
-    
-                            letrasXogador.remove(convertida[i].getContido());
-        
-                        } else {
-    
-                            if(letrasXogador.contains("*") ) {
-    
-                                if(!usouComodin ) {
-    
-                                    letrasXogador.remove("*");
-                                    usouComodin = true;
-    
-                                } else {
-    
-                                    out = false;
-    
-                                }
-        
+
+                        if(letrasXogador.contains("*") ) {
+
+                            if(!usouComodin ) {
+
+                                letrasXogador.remove("*");
+                                usouComodin = true;
+
                             } else {
-    
+
                                 out = false;
-    
+
                             }
     
+                        } else {
+
+                            out = false;
+
                         }
-    
+
                     }
-    
+
                 }
-    
-                if(out ) {
-    
-                    if(numCoincidencias == 0 && !primerTurno) {
-    
-                        EntradaSaida.imprimirErro("Non encaixa con ningunha letra do taboleiro");
-                        out = false;
-            
-                    } else if(numCoincidencias == convertida.length ) {
-            
-                        EntradaSaida.imprimirErro("Non pode coincidir exactamente con letras xa colocadadas no taboleiro");
-                        out = false;
-            
-                    }
-    
-                } else {
-    
-                    EntradaSaida.imprimirErro("Non tes as letras ou comodíns suficientes para colocar a palabra");
-    
-                }
-    
-            } else {
-    
-                EntradaSaida.imprimirErro("A palabra vaise fora dos bordes");
-    
+
             }
 
+            if(out ) {
+
+                if(numCoincidencias == 0 && !primerTurno) {
+
+                    EntradaSaida.imprimirErro("Non encaixa con ningunha letra do taboleiro");
+                    out = false;
+        
+                } else if(numCoincidencias == convertida.length ) {
+        
+                    EntradaSaida.imprimirErro("Non pode coincidir exactamente con letras xa colocadadas no taboleiro");
+                    out = false;
+        
+                }
+
+            } else {
+
+                EntradaSaida.imprimirErro("Non tes as letras ou comodíns suficientes para colocar a palabra");
+
+            }
+
+        } else {
+
+            EntradaSaida.imprimirErro("A palabra vaise fora dos bordes");
+
         }
+
 
         return out;
     }
@@ -420,7 +419,6 @@ public class Xogo {
         boolean palabraDobre = false;
         boolean usouComodin;
         Casilla casTaboleiro;
-        String[] resultados = {"LETRAS:  ", "MULT:    ", "PUNTOS:  "};
 
         for(int i = 0; i < palabra.length; i++ ) {
 
@@ -450,13 +448,11 @@ public class Xogo {
 
                     xog.getLetras().remove(index);
                     coincidenciasParaScrabble++;
-                    resultados[0] += palabra[i].valorMostra() + "  ";
 
                 } else {
 
                     usouComodin = true;
                     xog.getLetras().remove("*");
-                    resultados[0] += " *  ";
 
                 }
 
@@ -465,20 +461,8 @@ public class Xogo {
             if(!usouComodin ) {
 
                 puntos += Scrabble.puntuacionCasilla(palabra[i]) * casTaboleiro.getMultiplicador();
-                resultados[1] += " " + casTaboleiro.getMultiplicador() + "  ";
 
-                if(puntos < 10 ) {
 
-                    resultados[2] += " ";
-
-                }
-
-                resultados[2] += puntos + "  ";
-
-            } else {
-
-                resultados[1] += "    ";
-                resultados[2] += " 0  ";
 
             }
 
@@ -497,18 +481,7 @@ public class Xogo {
         if(palabraDobre ) {
 
             puntos *= 2;
-
-        }
-
-        for(String s : resultados ) {
-
-            System.out.println(s);
-
-        }
-
-        if(palabraDobre ) {
-
-            System.out.println("- Ademais dun multiplicador de x2 veces o valor da palabra");
+            System.out.println("- Valor dobre da palabra");
 
         }
 
